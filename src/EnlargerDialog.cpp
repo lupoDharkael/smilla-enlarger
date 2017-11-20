@@ -287,7 +287,8 @@ EnlargerDialog::EnlargerDialog(QWidget *parent)
 
 	setAcceptDrops(true);  // Drag and Drop: accept drops (of source files)
 
-	PrintStatusText(" Welcome to SmillaEnlarger 0.8.9.  Drop a file onto the window to open it.");
+	PrintStatusText(" Welcome to SmillaEnlarger " APP_VERSION
+					".  Drop a file onto the window to open it.");
 
 	if(DefaultType().isEmpty())
 	   ui->destFileEdit->setText("enlarged.jpg");
@@ -839,7 +840,7 @@ void EnlargerDialog::InfoMessage(void) {
     QString mainText, infoText;
 	msgBox.setTextFormat(Qt::RichText);
 
-    mainText =  "<p><b>SmillaEnlarger version 0.9.0</b></p>";
+	mainText =  "<p><b>SmillaEnlarger version " APP_VERSION "</b></p>";
     infoText = "<p>Copyright (C) 2009 Mischa Lusteck</p>";
     infoText += "<p>Project site: <a href=\"http://sourceforge.net/projects/imageenlarger/\">";
     infoText += "http://sourceforge.net/projects/imageenlarger/</a></p>";

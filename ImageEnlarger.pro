@@ -19,6 +19,9 @@
 # Project created by QtCreator 2009-06-16T16:07:28
 # -------------------------------------------------
 
+VERSION = 0.9.0
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
