@@ -4,6 +4,7 @@ SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
     ConsoleManager.h: command line functionality
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -43,19 +44,31 @@ class EnlargerOut : public QObject {
    QString dstName;
    bool ended;
 public:
-   EnlargerOut( void ) : QObject() { ended=false;}
-   ~EnlargerOut( void ) {}
-   void SetName( const QString & name ) { dstName = name; }
-   void StartMessage( void ) { cout<<"Calculating '"<<dstName.toStdString()<<"' - "<<flush; }
+   EnlargerOut() : QObject(), ended(false) {}
+   ~EnlargerOut() {}
+   void SetName(const QString &name) { dstName = name; }
+   void StartMessage() {
+	   cout << "Calculating '" << dstName.toStdString() << "' - " << flush;
+   }
 
 public slots:
-    void PrintProgress( int  p ) {
-       if( !ended ) {  cout<<"\rCalculating '"<<dstName.toStdString()<<"' - [ "<<p<<"% ]   "<<flush; } }
-    void badAlloc( void )
-       { cout<<"\n[ ERROR ]\nCould not allocate enough memory for '"<<dstName.toStdString()<<"'.\n"<<flush; ended=true; }
-    void imageNotSaved( void )
-       { cout<<" \n[ ERROR ] - Could not save image '"<<dstName.toStdString()<<"'.\n"<<flush; ended=true;  }
-    void imageSaved( int w, int h ) { cout<<" OK.\n"<<flush; ended=true; }
+	void PrintProgress(int  p) {
+	   if(!ended) {
+		   cout << "\rCalculating '" << dstName.toStdString() << "' - [ "<<p<<"% ]   "
+				<<flush;
+	   }
+	}
+	void badAlloc() {
+		cout << "\n[ ERROR ]\nCould not allocate enough memory for '" <<
+				dstName.toStdString() << "'.\n" << flush;
+		ended=true;
+	}
+	void imageNotSaved() {
+		cout << " \n[ ERROR ] - Could not save image '" << dstName.toStdString()<<"'.\n"<<flush; ended=true;  }
+	void imageSaved(int w, int h) {
+		cout << " OK.\n" << flush;
+		ended=true;
+	}
  };
 
 class ConsoleManager : public QObject {

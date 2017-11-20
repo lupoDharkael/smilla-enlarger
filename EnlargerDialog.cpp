@@ -4,6 +4,7 @@ SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
     EnlargerDialog.cpp: the Qt Dialog
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the

@@ -4,6 +4,7 @@ ImageEnlarger  -  resize, especially magnify bitmaps in high quality
     timing.h: time-measuring of program parts
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the

@@ -4,6 +4,7 @@ SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
     Preferences Dialog
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -24,7 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QString>
 
 namespace Ui
@@ -44,8 +45,8 @@ private:
 public:
    PreferencesDialog(QWidget *parent = 0);
    ~PreferencesDialog();
-   void ReadSettings( QSettings *mySettings );
-   void WriteSettings( QSettings *mySettings );
+   void ReadSettings(QSettings *mySettings);
+   void WriteSettings(QSettings *mySettings);
 
 private slots:
    void ComboChanged( void );

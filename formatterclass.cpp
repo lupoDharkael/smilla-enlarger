@@ -1,8 +1,32 @@
+/* ----------------------------------------------------------------
+
+SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
+	EnlargerThread.cpp: things necessary for putting the enlarging into own Qt-Thread
+
+Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
+
+This program is free software;
+you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation;
+either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+---------------------------------------------------------------------- */
+
 #include "ImageEnlargerCode/EnlargeParam.h"
 #include "formatterclass.h"
 #include <iostream>
-using namespace std;
 
+using namespace std;
 
 void FixWidthFormatter::CalculateFormat( int srcWidth, int srcHeight, EnlargeFormat & format ) {
    ClipCheck( srcWidth, srcHeight );

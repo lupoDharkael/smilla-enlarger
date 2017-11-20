@@ -4,6 +4,7 @@ SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
     EnlargerDialog.h: the Qt Dialog
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -24,7 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #ifndef ENLARGERDIALOG_H
 #define ENLARGERDIALOG_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #include <QDir>
 #include "ImageEnlargerCode/FractTab.h"
 #include "ImageEnlargerCode/EnlargeParam.h"

@@ -1,9 +1,10 @@
 /* ----------------------------------------------------------------
 
 SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
-    Preferences Dialog
+	EnlargerThread.cpp: things necessary for putting the enlarging into own Qt-Thread
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -20,7 +21,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 ---------------------------------------------------------------------- */
-
 #include <QFileDialog>
 #include <QDir>
 #include <QSettings>
@@ -38,14 +38,14 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 {
    uiPref->setupUi(this);
    typeGroup = new QButtonGroup();
-   typeGroup->addButton( uiPref->srcTypeRadioButton   );
-   typeGroup->addButton( uiPref->otherTypeRadioButton );
+   typeGroup->addButton(uiPref->srcTypeRadioButton);
+   typeGroup->addButton(uiPref->otherTypeRadioButton);
 
-   uiPref->qualitySlider->setMinimum( 1 );
-   uiPref->qualitySlider->setMaximum( 100 );
-   connect( uiPref->qualitySlider, SIGNAL(valueChanged(int)), uiPref->qualitySpinBox, SLOT(setValue(int)) );
-   connect( uiPref->qualitySpinBox,SIGNAL(valueChanged(int)), uiPref->qualitySlider,  SLOT(setValue(int)) );
-   connect( uiPref->typeComboBox,SIGNAL(activated(int)), this, SLOT(ComboChanged()) );
+   uiPref->qualitySlider->setMinimum(1);
+   uiPref->qualitySlider->setMaximum(100);
+   connect(uiPref->qualitySlider, SIGNAL(valueChanged(int)), uiPref->qualitySpinBox, SLOT(setValue(int)) );
+   connect(uiPref->qualitySpinBox,SIGNAL(valueChanged(int)), uiPref->qualitySlider,  SLOT(setValue(int)) );
+   connect(uiPref->typeComboBox,SIGNAL(activated(int)), this, SLOT(ComboChanged()) );
 
 }
 

@@ -4,6 +4,7 @@ SmillaEnlarger  -  resize, especially magnify bitmaps in high quality
     main.cpp: just exec()
 
 Copyright (C) 2009 Mischa Lusteck
+Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -21,32 +22,30 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 ---------------------------------------------------------------------- */
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QIcon>
 #include "ConsoleManager.h"
 #include "EnlargerDialog.h"
 #include "EnlargerThread.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     QIcon myIcon(":/smilla.png");
-    qApp->setWindowIcon( myIcon );
+	qApp->setWindowIcon(myIcon);
 
     // in the ConsoleManager the command line options are defined
     // the ConsoleManager will parse them, decides via UseGUI() which mode to use
     // and sets up the Dialog or starts calc in console according to given args
-    ConsoleManager myConsoleManager( argc, argv );
+	ConsoleManager myConsoleManager(argc, argv);
 
-    if( myConsoleManager.UseGUI() ) {
+	if (myConsoleManager.UseGUI()) {
        EnlargerDialog w;
-       myConsoleManager.SetupEnlargerDialog( w );
+	   myConsoleManager.SetupEnlargerDialog(w);
        w.show();
        return a.exec();
-    }
-    else {
+	} else {
        EnlargerThread myThread;
-       if( myConsoleManager.StartConsoleEnlarge( myThread ) ) {
+	   if (myConsoleManager.StartConsoleEnlarge(myThread)) {
           return a.exec();
        }
     }
