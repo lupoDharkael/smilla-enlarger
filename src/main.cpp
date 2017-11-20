@@ -30,7 +30,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    QIcon myIcon(":/smilla.png");
+	QIcon myIcon(":/img/smilla.png");
 	qApp->setWindowIcon(myIcon);
 
     // in the ConsoleManager the command line options are defined

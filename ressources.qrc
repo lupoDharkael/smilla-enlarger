@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>smilla.bmp</file>
-        <file>smilla.png</file>
+        <file>img/smilla.bmp</file>
+        <file>img/smilla.png</file>
         <file>help/helpMain.html</file>
         <file>help/dragAndPaste.html</file>
         <file>help/gettingStarted.html</file>

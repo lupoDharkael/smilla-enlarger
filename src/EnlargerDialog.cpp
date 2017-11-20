@@ -211,7 +211,7 @@ EnlargerDialog::EnlargerDialog(QWidget *parent)
 	connect(ui->fractNoiseSpinBox, SIGNAL(valueChanged(int)), ui->fractNoiseSlider,  SLOT(setValue(int)));
 	ui->fractNoiseSlider->setValue(0);
 
-	SetSource(QImage(":/smilla.bmp"));
+	SetSource(QImage(":/img/smilla.bmp"));
 
 	ui->progressBar->setRange(0, 100);
 	ui->progressBar->setValue(100);
@@ -220,7 +220,7 @@ EnlargerDialog::EnlargerDialog(QWidget *parent)
 	ui->comboBox->setMinimumContentsLength(30);
     ui->comboBox->clear();
     currentSrcName = " < Smilla > ";
-    currentSrcPath = ":/smilla.bmp";
+	currentSrcPath = ":/img/smilla.bmp";
 
 	ui->comboBox->addItem(currentSrcName);
 

@@ -37,7 +37,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
 #include <math.h>
-#include "ImageEnlargerCode/ConstDefs.h"
+#include "src/ImageEnlargerCode/ConstDefs.h"
 #include "ArraysTemplate.h"
 
 using namespace std;

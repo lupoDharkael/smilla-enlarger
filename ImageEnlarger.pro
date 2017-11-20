@@ -37,45 +37,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += main.cpp \
-    selectField.cpp \
-    previewField.cpp \
-    EnlargerDialog.cpp \
-    ImageEnlargerCode/Array.cpp \
-    EnlargerThread.cpp \
-    TemplateInst.cpp \
-    ImageEnlargerCode/FractTab.cpp \
-    CalcQueue.cpp \
-    ArgumentParser.cpp \
-    ConsoleManager.cpp \
-    ED_LoadSave.cpp \
-    ED_Parameter.cpp \
-    Preferences.cpp \
-    ClipRect.cpp \
-    formatterclass.cpp \
-    thumbField.cpp
-HEADERS += selectField.h \
-    previewField.h \
-    EnlargerDialog.h \
-    ImageEnlargerCode/timing.h \
-    ImageEnlargerCode/PointClass.h \
-    ImageEnlargerCode/ConstDefs.h \
-    ImageEnlargerCode/ArraysTemplateDefs.h \
-    ImageEnlargerCode/ArraysTemplate.h \
-    ImageEnlargerCode/Array.h \
-    EnlargerThread.h \
-    ImageEnlargerCode/EnlargerTemplateDefs.h \
-    ImageEnlargerCode/FractTab.h \
-    CalcQueue.h \
-    ImageEnlargerCode/EnlargeParam.h \
-    ArgumentParser.h \
-    ImageEnlargerCode/EnlargerTemplate.h \
-    ConsoleManager.h \
-    Preferences.h \
-    ClipRect.h \
-    formatterclass.h \
-    thumbField.h
-FORMS += enlargerdialog.ui \
-    preferences.ui
+SOURCES += src/main.cpp \
+    src/selectField.cpp \
+    src/previewField.cpp \
+    src/EnlargerDialog.cpp \
+    src/ImageEnlargerCode/Array.cpp \
+    src/EnlargerThread.cpp \
+    src/TemplateInst.cpp \
+    src/ImageEnlargerCode/FractTab.cpp \
+    src/CalcQueue.cpp \
+    src/ArgumentParser.cpp \
+    src/ConsoleManager.cpp \
+    src/ED_LoadSave.cpp \
+    src/ED_Parameter.cpp \
+    src/Preferences.cpp \
+    src/ClipRect.cpp \
+    src/formatterclass.cpp \
+    src/thumbField.cpp
+HEADERS += src/selectField.h \
+    src/previewField.h \
+    src/EnlargerDialog.h \
+    src/ImageEnlargerCode/timing.h \
+    src/ImageEnlargerCode/PointClass.h \
+    src/ImageEnlargerCode/ConstDefs.h \
+    src/ImageEnlargerCode/ArraysTemplateDefs.h \
+    src/ImageEnlargerCode/ArraysTemplate.h \
+    src/ImageEnlargerCode/Array.h \
+    src/EnlargerThread.h \
+    src/ImageEnlargerCode/EnlargerTemplateDefs.h \
+    src/ImageEnlargerCode/FractTab.h \
+    src/CalcQueue.h \
+    src/ImageEnlargerCode/EnlargeParam.h \
+    src/ArgumentParser.h \
+    src/ImageEnlargerCode/EnlargerTemplate.h \
+    src/ConsoleManager.h \
+    src/Preferences.h \
+    src/ClipRect.h \
+    src/formatterclass.h \
+    src/thumbField.h
+FORMS += src/enlargerdialog.ui \
+    src/preferences.ui
 RESOURCES += ressources.qrc
 CONFIG += console
