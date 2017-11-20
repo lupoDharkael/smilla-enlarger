@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>smilla.bmp</file>
+        <file>smilla.png</file>
+        <file>help/helpMain.html</file>
+        <file>help/dragAndPaste.html</file>
+        <file>help/gettingStarted.html</file>
+        <file>help/jobQueue.html</file>
+        <file>help/parameterTab.html</file>
+        <file>help/load.html</file>
+        <file>help/save.html</file>
+        <file>help/batch.html</file>
+        <file>help/bug.html</file>
+        <file>help/dimensions.html</file>
+        <file>help/cropping.html</file>
+        <file>help/command.html</file>
+    </qresource>
+</RCC>

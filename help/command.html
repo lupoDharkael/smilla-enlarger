@@ -1,0 +1,89 @@
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<h2><b>SmillaEnlarger as a Command Line Tool</b></h2>
+<p>SmillaEnlarger can also be used from the command line.
+</p>
+<p><b>Windows</b> users have to call <b>SmillaEnlargerCL.exe</b> instead of SmillaEnlarger.exe .
+</p>
+<p><b>Mac</b> users have to use the binary deep  inside the SmillaEnlarger.app bundle.
+   To create a <b>symbolic link</b> to the binary, open a terminal window,
+   change to the directory you want to put your link and call 
+</p>
+<p><code>
+   ln -s /Path/to/SmillaEnlarger.app/Contents/MacOS/SmillaEnlarger
+</code></p>
+<p>
+   with the appropriate path to your SmillaEnlarger.<br>
+   To prevent lengthy path-typing, simply write <code> ln -s </code> into the terminal,
+   then go to your SmillaEnlarger icon, <b>option-click</b> onto it and open the application bundle. <br>
+   Go into the subfolder Contents/MacOS/, inside you will find the SmillaEnlarger binary,
+   grab it with the mouse and drop it onto the terminal window,
+   the terminal then will fill in the full path to the binary.
+</p>
+<p>
+<br>
+<b>Usage of SmillaEnlarger:</b>
+</b>
+<p>
+<code>SmillaEnlarger [ &lt; sourcename &gt; ] [ -options... ]</code>
+</p>
+<p>
+with options<br>
+<br>
+<code> -z &lt;number&gt;  / -zoom &lt;number&gt; </code></code><br>
+       Set zoom-factor to &lt;number&gt; percent ( integer value ).<br>
+<br>
+<code>   -o &lt;filename&gt;</code><br>   
+       Write result to file &lt;filename&gt; .<br>
+<br>
+<code>   -saveto &lt;foldername&gt;</code><br>   
+       Write results into folder &lt;foldername&gt;  .<br>
+<br>
+</p>
+<p>
+<b>Output Dimensions:</b><br> 
+<br>
+<code>   -width &lt;sizex&gt; and -height &lt;sizey&gt; </code><br>  
+       set size of resulting image.<br>
+   If both width and height are given, aspect ratio is changed by default.
+   Additionally, if you have set -width AND -height ,
+   you can set one of the following options: <br>
+<br>
+<code>   -fit</code><br> 
+       Fit output inside the given rectangle.<br>
+<br>
+<code>   -fitandbars </code><br>
+       Fit output inside the given rectangle,<br> 
+       fill up with black margins.<br>
+<br>
+<code>   -cover </code><br>
+       Cover the given rectangle.<br>
+<br>
+<code>   -coverandcrop </code><br>
+       Cover the given rectangle, cut away the overlapping parts.<br>
+<br>
+</p>
+<p>
+<b>Enlarge Parameters:</b><br> 
+<br>
+<code>   -sharp &lt; n &gt;,   -flat &lt; n &gt;,     -dither &lt; n &gt; </code><br>
+<code>   -deNoise &lt; n &gt;, -preSharp &lt; n &gt;, -fNoise &lt; n &gt;  </code><br>
+       Set the enlarge parameters with integer numbers &lt; n &gt; between 0 and 100.<br>
+<br>
+</p>
+<p>
+<code>   -quality &lt;number&gt; </code><br>  
+       Set image quality of the result.<br>
+<br>
+<code>   -h / -help</code><br> 
+       Print this help.<br>
+<br>
+<code>   -i </code><br>
+       Start in interactive mode.<br>
+</p>
+</code>
+</body>
+</html>

@@ -1,0 +1,58 @@
+
+Changes in SmillaEnlarger 0.9.0:
+
+  - The interface is completely reworked.
+
+  - Cropping is much improved.
+
+
+
+Changes in SmillaEnlarger 0.8.9:
+
+  - The interface is laid out more clearly using Tabs.
+
+  - Calculations are now moved into a job queue and processed
+    in the background  while you can continue your work at once.
+
+  - Batch Processing is implemented. When you drop folders
+    or multiple files, they are directly pushed into the
+    queue using the current settings.
+
+  - The settings of the parameter sliders are saved now.
+
+  - The Help was improved. 
+
+  - You can use SmillaEnlarger as a command line tool.
+
+
+
+Changes in SmillaEnlarger 0.8.5:
+
+  - Some interface improvements
+
+  - Drag & Drop: drop files and images from other programs 
+    onto the enlarger window to open them
+
+  - Clipboard paste
+
+  - Help-menu added
+
+  - Enlarging uses less memory
+
+  - Code cleanup: algorithm moved into BasicEnlarger<T> template
+    ( where T can be any float-vectorspace-class with dot-product and norm )
+
+  - Support alpha channel
+
+  - Added FractNoise slider: 
+    modify result colors and contours with plasma fractal noise 
+
+  - slightly changed dithering - should now better preserve original hue
+
+
+
+
+
+
+
+
