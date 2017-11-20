@@ -78,6 +78,4 @@ HEADERS += selectField.h \
 FORMS += enlargerdialog.ui \
     preferences.ui
 RESOURCES += ressources.qrc
-OTHER_FILES += icon.rc
-RC_FILE = icon.rc
 CONFIG += console
