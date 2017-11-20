@@ -229,7 +229,7 @@ void EnlargerDialog::SourceFromMimeData( const QMimeData *mimeData ) {
          currentSrcName = " < dropped / pasted > ";
          currentSrcPath = "";   // no path -> image itself has to be stored in calcJob
          ui->comboBox->addItem( currentSrcName );
-         QString picDir = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
+		 QString picDir = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
          srcDir.setPath( picDir );
          if( ui->srcCheckBox->isChecked() )
             SetDestDir( picDir );

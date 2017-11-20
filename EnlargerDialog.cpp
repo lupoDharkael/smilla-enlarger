@@ -26,7 +26,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include <QDesktopServices>    // for getting std. picture-directory
 #include <QDir>
 #include <QSettings>
+#include <QMenuBar>
 #include <QtGui>
+#include <QMessageBox>
 
 #include <iostream>
 #include "EnlargerDialog.h"
@@ -73,7 +75,7 @@ EnlargerDialog::EnlargerDialog(QWidget *parent)
     theCalcQueue = new CalcQueue();
     ui->queueListView->setModel( theCalcQueue->DisplayModel() );
 
-    QString picDir = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
+	QString picDir = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     srcDir.setPath( picDir );
     SetDestDir( picDir );
 
@@ -320,12 +322,11 @@ EnlargerDialog::~EnlargerDialog()
 }
 
 void EnlargerDialog::MenuBarSetup( void ) {
-   QMenu *fileMenu, *helpMenu;
    QAction *aboutA, *quitA, *loadA, *saveA, *pasteA, *prefA;
    QAction *helpShowA, *helpMoreA;
 
-   fileMenu = menuBar()->addMenu(tr("File"));
-   helpMenu = menuBar()->addMenu(tr("Help"));
+   QMenu *fileMenu = menuBar()->addMenu(tr("File"));
+   QMenu *helpMenu = menuBar()->addMenu(tr("Help"));
 
    loadA  = fileMenu->addAction(tr("&Open..."));
    saveA  = fileMenu->addAction(tr("Enlarge && Save"));
