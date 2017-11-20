@@ -38,68 +38,68 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-ConsoleManager::ConsoleManager( int argc, char *argv[] ) : QObject() {
-   oZoom.Set    ( &myParser, "-z", "-zoom" ); oZoom.SetRange ( 1, 100000 );   oZoom.SetDefault( 200 );
-   oWidth.Set   ( &myParser, "-width"      ); oWidth.SetRange( 1, 1000000 );
-   oHeight.Set  ( &myParser, "-height"     ); oHeight.SetRange( 1, 1000000 );
+ConsoleManager::ConsoleManager(int argc, char *argv[]) : QObject() {
+   oZoom.Set    (&myParser, "-z", "-zoom"); oZoom.SetRange (1, 100000);   oZoom.SetDefault(200);
+   oWidth.Set   (&myParser, "-width"     ); oWidth.SetRange(1, 1000000);
+   oHeight.Set  (&myParser, "-height"    ); oHeight.SetRange(1, 1000000);
 
-   oSharp.Set   ( &myParser, "-sharp"      ); oSharp.SetRange( 0, 100 );      oSharp.SetDefault   ( 80 );
-   oFlat.Set    ( &myParser, "-flat"       ); oFlat.SetRange( 0, 100 );       oFlat.SetDefault    ( 20 );
-   oDeNoise.Set ( &myParser, "-deNoise"    ); oDeNoise.SetRange( 0, 100 );    oDeNoise.SetDefault ( 20 );
-   oPreSharp.Set( &myParser, "-preSharp"   ); oPreSharp.SetRange( 0, 100 );   oPreSharp.SetDefault(  0 );
-   oDither.Set  ( &myParser, "-dither"     ); oDither.SetRange( 0, 100 );     oDither.SetDefault  ( 10 );
-   oFNoise.Set  ( &myParser, "-fNoise"     ); oFNoise.SetRange( 0, 100 );     oFNoise.SetDefault  (  0 );
+   oSharp.Set   (&myParser, "-sharp"     ); oSharp.SetRange(0, 100);      oSharp.SetDefault   (80);
+   oFlat.Set    (&myParser, "-flat"      ); oFlat.SetRange(0, 100);       oFlat.SetDefault    (20);
+   oDeNoise.Set (&myParser, "-deNoise"   ); oDeNoise.SetRange(0, 100);    oDeNoise.SetDefault (20);
+   oPreSharp.Set(&myParser, "-preSharp"  ); oPreSharp.SetRange(0, 100);   oPreSharp.SetDefault( 0);
+   oDither.Set  (&myParser, "-dither"    ); oDither.SetRange(0, 100);     oDither.SetDefault  (10);
+   oFNoise.Set  (&myParser, "-fNoise"    ); oFNoise.SetRange(0, 100);     oFNoise.SetDefault  ( 0);
 
-   oQuality.Set ( &myParser, "-quality"    ); oQuality.SetRange( 0, 100 );    oQuality.SetDefault  ( 90 );
-   oOutput.Set  ( &myParser, "-o" );
-   oOutputFolder.Set  ( &myParser, "-saveto" );
+   oQuality.Set (&myParser, "-quality"   ); oQuality.SetRange(0, 100);    oQuality.SetDefault  (90);
+   oOutput.Set  (&myParser, "-o");
+   oOutputFolder.Set  (&myParser, "-saveto");
 
-   oHelp.Set( &myParser, "-h" , "-help" );
-   oInteractive.Set( &myParser, "-i" );
-   oFormatCover.Set( &myParser, "-cover" );
-   oFormatFit. Set( &myParser, "-fit" );
-   oFormatCrop.Set( &myParser, "-coverandcrop" );
-   oFormatBars.Set( &myParser, "-fitandbars" );
+   oHelp.Set(&myParser, "-h" , "-help");
+   oInteractive.Set(&myParser, "-i");
+   oFormatCover.Set(&myParser, "-cover");
+   oFormatFit. Set(&myParser, "-fit");
+   oFormatCrop.Set(&myParser, "-coverandcrop");
+   oFormatBars.Set(&myParser, "-fitandbars");
    parseError = false;
-   if( !myParser.Parse( argc, argv ) ) {
+   if(!myParser.Parse(argc, argv)) {
       cout<<"Error parsing command line arguments. \n"<<flush;
       PrintHelp();
       parseError = true;
       return;
    }
-   if( oHelp.IsThere() )
+   if(oHelp.IsThere())
       PrintHelp();
 
-   // informations are now saved in option objects and argumentParser ( otherArguments )
+   // informations are now saved in option objects and argumentParser (otherArguments)
    // can be used in SetupEnlargerDialog, RunConsoleEnlarge
 }
 
 // decide if GUI or Console mode is used
-bool ConsoleManager::UseGUI( void ) {
-   if( parseError ) {
+bool ConsoleManager::UseGUI(void) {
+   if(parseError) {
       return false;
    }
-   if( oInteractive.IsThere() ) {
+   if(oInteractive.IsThere()) {
       return true;
    }
-   if( myParser.NonOptionArguments().isEmpty() ) {    // no file given for processing -> GUI mode
+   if(myParser.NonOptionArguments().isEmpty()) {    // no file given for processing -> GUI mode
       return true;
    }
-   else if( !oZoom.IsThere() && !oWidth.IsThere() && !oHeight.IsThere() ) { // no output dimensions
+   else if(!oZoom.IsThere() && !oWidth.IsThere() && !oHeight.IsThere()) { // no output dimensions
       cout<<"No output dimensions given. Starting in interactive mode.\n"<<flush;
       return true;
    }
-   else if( myParser.OptionsFound() ) {               // options & file -> Console mode
+   else if(myParser.OptionsFound()) {               // options & file -> Console mode
       return false;
    }
    return true;
 }
 
-void ConsoleManager::SetupEnlargerDialog ( EnlargerDialog & theDialog ) {
+void ConsoleManager::SetupEnlargerDialog (EnlargerDialog & theDialog) {
    EnlargeParamInt param;
 
-   if( oSharp.IsThere()   || oFlat.IsThere()     || oDither.IsThere() ||
-       oDeNoise.IsThere() || oPreSharp.IsThere() || oFNoise.IsThere()    ) {
+   if(oSharp.IsThere()   || oFlat.IsThere()     || oDither.IsThere() ||
+	   oDeNoise.IsThere() || oPreSharp.IsThere() || oFNoise.IsThere()   ) {
       param.sharp =      oSharp.Value();
       param.flat  =      oFlat.Value();
       param.dither =     oDither.Value();
@@ -107,39 +107,39 @@ void ConsoleManager::SetupEnlargerDialog ( EnlargerDialog & theDialog ) {
       param.preSharp =   oPreSharp.Value();
       param.fractNoise = oFNoise.Value();
 
-      theDialog.AddParamSet( "console", param );
+	  theDialog.AddParamSet("console", param);
    }
 
-   if( !myParser.NonOptionArguments().isEmpty() ) {
-      theDialog.TryOpenSource( myParser.NonOptionArguments().at(0) );
+   if(!myParser.NonOptionArguments().isEmpty()) {
+	  theDialog.TryOpenSource(myParser.NonOptionArguments().at(0));
    }
    theDialog.DoPreview();
 }
 
-bool ConsoleManager::StartConsoleEnlarge  ( EnlargerThread & myThread ) {
-    if( parseError ) {
+bool ConsoleManager::StartConsoleEnlarge  (EnlargerThread & myThread) {
+	if(parseError) {
        cout<<"Parse error, aborting.\n"<<flush;
        return false;
     }
-    if( myParser.NonOptionArguments().isEmpty() ) {
+	if(myParser.NonOptionArguments().isEmpty()) {
        cout<<"No filename given, aborting.\n"<<flush;
        return false;
     }
 
     QImage srcImage;
-    if( !TryOpenSource( myParser.NonOptionArguments().at(0), srcImage ) ) {
+	if(!TryOpenSource(myParser.NonOptionArguments().at(0), srcImage)) {
        return false;
     }
-    if( oOutput.IsThere() ) {
+	if(oOutput.IsThere()) {
        dstName = oOutput.Value();
     }
-    myEnOut.SetName( dstName );
+	myEnOut.SetName(dstName);
 
-    connect( &myThread, SIGNAL(enlargeEnd(int)),   qApp,     SLOT(quit()) );
-    connect( &myThread, SIGNAL(imageNotSaved()),   &myEnOut, SLOT(imageNotSaved()) );
-    connect( &myThread, SIGNAL(imageSaved(int,int)),      &myEnOut, SLOT(imageSaved(int,int)) );
-    connect( &myThread, SIGNAL(tellProgress(int)), &myEnOut, SLOT(PrintProgress(int)) );
-    connect( &myThread, SIGNAL(badAlloc()),        &myEnOut, SLOT(badAlloc()) );
+	connect(&myThread, SIGNAL(enlargeEnd(int)),   qApp,     SLOT(quit()));
+	connect(&myThread, SIGNAL(imageNotSaved()),   &myEnOut, SLOT(imageNotSaved()));
+	connect(&myThread, SIGNAL(imageSaved(int,int)),      &myEnOut, SLOT(imageSaved(int,int)));
+	connect(&myThread, SIGNAL(tellProgress(int)), &myEnOut, SLOT(PrintProgress(int)));
+	connect(&myThread, SIGNAL(badAlloc()),        &myEnOut, SLOT(badAlloc()));
 
     EnlargeFormat format;
     EnlargeParamInt param;
@@ -154,75 +154,75 @@ bool ConsoleManager::StartConsoleEnlarge  ( EnlargerThread & myThread ) {
     format.srcWidth  = srcImage.width();
     format.srcHeight = srcImage.height();
 
-    if( oZoom.IsThere() ) {
-       format.SetScaleFact( float( oZoom.Value() )*0.01 );
+	if(oZoom.IsThere()) {
+	   format.SetScaleFact(float(oZoom.Value())*0.01);
     }
 
-    float sx =  float( oWidth.Value()  ) / float( srcImage.width() );
-    float sy =  float( oHeight.Value() ) / float( srcImage.height() );
-    if( oWidth.IsThere() && !oHeight.IsThere() ) {
-       format.SetScaleFact( sx );
+	float sx =  float(oWidth.Value() ) / float(srcImage.width());
+	float sy =  float(oHeight.Value()) / float(srcImage.height());
+	if(oWidth.IsThere() && !oHeight.IsThere()) {
+	   format.SetScaleFact(sx);
     }
-    else if( !oWidth.IsThere() && oHeight.IsThere() ) {
-       format.SetScaleFact( sy );
+	else if(!oWidth.IsThere() && oHeight.IsThere()) {
+	   format.SetScaleFact(sy);
     }
-    else if( oWidth.IsThere() && oHeight.IsThere() ) {
-       if( oFormatFit.IsThere() ) {
+	else if(oWidth.IsThere() && oHeight.IsThere()) {
+	   if(oFormatFit.IsThere()) {
            float s = sx;
-           if( sy < s )
+		   if(sy < s)
               s =sy;
-           format.SetScaleFact( s );
+		   format.SetScaleFact(s);
        }
-       else if( oFormatCover.IsThere() ) {
+	   else if(oFormatCover.IsThere()) {
           float s = sx;
-          if( sy > s )
+		  if(sy > s)
              s =sy;
-          format.SetScaleFact( s );
+		  format.SetScaleFact(s);
        }
-       else if( oFormatCrop.IsThere() ) {
-          CropFormatter myFormatter( oWidth.Value(), oHeight.Value() );
-          myFormatter.CalculateFormat( srcImage.width(), srcImage.height(), format );
+	   else if(oFormatCrop.IsThere()) {
+		  CropFormatter myFormatter(oWidth.Value(), oHeight.Value());
+		  myFormatter.CalculateFormat(srcImage.width(), srcImage.height(), format);
        }
-       else if( oFormatBars.IsThere() ) {
-          MaxBoundBarFormatter myFormatter( oWidth.Value(), oHeight.Value() );
-          myFormatter.CalculateFormat( srcImage.width(), srcImage.height(), format );
+	   else if(oFormatBars.IsThere()) {
+		  MaxBoundBarFormatter myFormatter(oWidth.Value(), oHeight.Value());
+		  myFormatter.CalculateFormat(srcImage.width(), srcImage.height(), format);
        }
        else {
-          format.SetScaleFact( sx, sy );
+		  format.SetScaleFact(sx, sy);
        }
     }
 
     myEnOut.StartMessage();
-    myThread.EnlargeAndSave( srcImage, format, param.FloatParam(), dstName, oQuality.Value() );
+	myThread.EnlargeAndSave(srcImage, format, param.FloatParam(), dstName, oQuality.Value());
     return true;
 }
 
 
-bool ConsoleManager::TryOpenSource( QString fileName, QImage & srcImage ) {
+bool ConsoleManager::TryOpenSource(QString fileName, QImage & srcImage) {
    QString dstDirPath,body,type,typeL;
    QString symLinkTarget, symLinkPath;
    bool isSymLink = false;
 
-   // test if symbolic link, if true: use link target ( but use dir of link as dstDir )
-   symLinkTarget = QFile::symLinkTarget( fileName );
-   if( !symLinkTarget.isEmpty() ) {  // is symLink
+   // test if symbolic link, if true: use link target (but use dir of link as dstDir)
+   symLinkTarget = QFile::symLinkTarget(fileName);
+   if(!symLinkTarget.isEmpty()) {  // is symLink
       isSymLink = true;
-      QFileInfo fi( fileName );
+	  QFileInfo fi(fileName);
       symLinkPath = fi.absolutePath();
       fileName = symLinkTarget;  // switch to the target
    }
 
-   if( !QFile::exists( fileName ) ) {
+   if(!QFile::exists(fileName)) {
       cout<<"Source file '" + fileName.toStdString() + "' does not exist.\n"<<flush;
       return false;
    }
 
    // switch to absolute file path
-   QFileInfo fi( fileName );
+   QFileInfo fi(fileName);
    fileName = fi.absoluteFilePath();
    type = fi.suffix();
    body = fi.completeBaseName();
-   if( oOutputFolder.IsThere() ) {
+   if(oOutputFolder.IsThere()) {
       dstDirPath = oOutputFolder.Value();
    }
    else {
@@ -230,78 +230,78 @@ bool ConsoleManager::TryOpenSource( QString fileName, QImage & srcImage ) {
    }
    QStringList typeList;
    typeList << "jpg" << "jpeg" << "bmp" << "png" << "tif" << "tiff" << "ppm" << "gif";
-   if( !typeList.contains( type, Qt::CaseInsensitive ) ) {
+   if(!typeList.contains(type, Qt::CaseInsensitive)) {
       cout<<"Source file '" + fileName.toStdString() + "' of unsupported type < " + type.toStdString() + " >.\n"<<flush;
       return false;
    }
 
-   if( !srcImage.load( fileName ) ) {
+   if(!srcImage.load(fileName)) {
       cout<<"Could not open image '" + fileName.toStdString() + "'.\n"<<flush;
       return false;
    }
-   if( srcImage.hasAlphaChannel() )
-      srcImage = srcImage.convertToFormat( QImage::Format_ARGB32 );
+   if(srcImage.hasAlphaChannel())
+	  srcImage = srcImage.convertToFormat(QImage::Format_ARGB32);
    else
-      srcImage = srcImage.convertToFormat( QImage::Format_RGB32 );
+	  srcImage = srcImage.convertToFormat(QImage::Format_RGB32);
 
-   if( type.toLower() == QString("gif") )
+   if(type.toLower() == QString("gif"))
       type = QString("png");
    dstName = body+"_e."+type;
-   IncDestName( dstName, dstDirPath );
+   IncDestName(dstName, dstDirPath);
    QDir dDir(dstDirPath);
-   dstName = dDir.absoluteFilePath( dstName );
+   dstName = dDir.absoluteFilePath(dstName);
 
    return true;
 }
 
 // if the current dst-filename exists, then
 // increment a number at end of filename
-void ConsoleManager::IncDestName( QString & dstName ,  const QString & dstDirPath  ) {
+void ConsoleManager::IncDestName(QString & dstName ,  const QString & dstDirPath ) {
    QString body, type, path, dstPath;
    QDir dDir(dstDirPath);
 
-   dstPath = dDir.absoluteFilePath( dstName );
-   if( !dDir.exists( dstName ) )
+   dstPath = dDir.absoluteFilePath(dstName);
+   if(!dDir.exists(dstName))
        return;
 
-   QFileInfo fi( dstName );
+   QFileInfo fi(dstName);
    type = fi.suffix();
-   if( !type.isEmpty() )
+   if(!type.isEmpty())
       type = "."+type;
    body = fi.completeBaseName();
 
    int num=0;
    QRegExp rx("[0-9]*$");   // search the number before end
    int numPos = rx.indexIn(body);
-   if( numPos == body.size() )  // no number: begin with 0
+   if(numPos == body.size())  // no number: begin with 0
       num=0;
    else {
       // find the number and increment it, cut body
       bool isOk;
-      num = body.right( body.size() - numPos ).toInt( &isOk, 10 );
-      if( num<0 )
+	  num = body.right(body.size() - numPos).toInt(&isOk, 10);
+	  if(num<0)
           num=0;
       num++;
-      body = body.left( numPos );
+	  body = body.left(numPos);
    }
 
    // count up until name is found, which does not exist in dir nor queue
-   while( num < 1000 ) {
+   while(num < 1000) {
       dstName = body + QString::number(num) + type;
-      dstPath = dDir.absoluteFilePath( dstName );
-      if(  !dDir.exists( dstName ) )
+	  dstPath = dDir.absoluteFilePath(dstName);
+	  if( !dDir.exists(dstName))
           break;
       num++;
    }
 }
 
-void ConsoleManager::PrintHelp( void ) {
+void ConsoleManager::PrintHelp(void) {
    cout<<"\n";
    cout<<"Usage:\n\n";
    cout<<"SmillaEnlarger [ < sourcename > ] [ -options... ]\n";
    cout<<"   with options \n";
    cout<<"   -z <number>  / -zoom <number> \n";
-   cout<<"       Set zoom-factor to <number> percent ( integer value ).\n";
+   cout<<"       Set zoom-factor to <number> percent (integer value).\n";
    cout<<"   -o <filename>   \n";
    cout<<"       Write result to file <filename> .\n";
    cout<<"   -saveto <foldername>   \n";

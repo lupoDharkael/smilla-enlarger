@@ -53,36 +53,36 @@ private:
     float sXGrabStart, sYGrabStart;
 
 public:
-    PreviewField( QWidget *parent=0 );
-    ~PreviewField( void );
-    void setZoom( float newZoomX,  float newZoomY );
-    void setZoom( float newZoom  )  { setZoom( newZoom, newZoom ); }
-    void setTheImage( const QImage & newImage );
-    void setClipRect( float cx0, float cy0, float cx1, float cy1 );
-    void setPreview( const QImage & preImage );
-    QImage theImage( void ) const { return srcImage; }
-    QRect DstRect( void );
-    float ZoomX( void ) { return zoomX; };
-    float ZoomY( void ) { return zoomY; };
-    float CenterX( void ) { return selectX + 0.5*selectW; }
-    float CenterY( void ) { return selectY + 0.5*selectH; }
-    QSize sizeHint( void ) const;
-    QSize minimumSizeHint( void ) const;
+	PreviewField(QWidget *parent=0);
+	~PreviewField(void);
+	void setZoom(float newZoomX,  float newZoomY);
+	void setZoom(float newZoom )  { setZoom(newZoom, newZoom); }
+	void setTheImage(const QImage & newImage);
+	void setClipRect(float cx0, float cy0, float cx1, float cy1);
+	void setPreview(const QImage & preImage);
+	QImage theImage(void) const { return srcImage; }
+	QRect DstRect(void);
+	float ZoomX(void) { return zoomX; };
+	float ZoomY(void) { return zoomY; };
+	float CenterX(void) { return selectX + 0.5*selectW; }
+	float CenterY(void) { return selectY + 0.5*selectH; }
+	QSize sizeHint(void) const;
+	QSize minimumSizeHint(void) const;
 
 signals:
-    void selectionChanged( float x, float y );
+	void selectionChanged(float x, float y);
 
 public slots:
-    void moveSelection( float x, float y );
+	void moveSelection(float x, float y);
 
 protected:
-    void mousePressEvent( QMouseEvent *event );
-    void mouseMoveEvent( QMouseEvent *event );
-    void mouseReleaseEvent( QMouseEvent *event );
-    void paintEvent( QPaintEvent *event );
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void paintEvent(QPaintEvent *event);
 
 private:
-    void CorrectSelect( void );
+	void CorrectSelect(void);
 };
 
 #endif // PREVIEWFIELD_H

@@ -45,20 +45,20 @@ public:
    PFloat & operator*= (float a)  { x*=a;          return *this;}
    PFloat   operator+  (PFloat p) { return  p+=*this;}
    PFloat   operator-  (PFloat p) { p.x=x-p.x;     return p;}
-   PFloat   operator-  (void   )  { PFloat p(-x);  return p;}
+   PFloat   operator-  (void  )  { PFloat p(-x);  return p;}
    float    operator*  (PFloat p) { return x*p.x;  }
    PFloat   operator*  (float a)  { PFloat p(x*a); return p;}
 
    bool  IsZero(void) { return x==0.0; }
    PFloat Normalized(void) { return 1.0; }
    void  Normalize(void) { x = 1.0; }
-   float Norm    ( void )  { return fabs(x); }
-   float Norm1   ( void )  { return fabs(x); }
-   void  Clip    ( void )  { if(x<0.0) x= 0.0; else if(x>1.0) x=1.0; }
-   void  AddMul  ( float a, PFloat & p) {  x += a*p.x; }
-   void  SetZero ( void  ) { x = 0.0;  }
+   float Norm    (void)  { return fabs(x); }
+   float Norm1   (void)  { return fabs(x); }
+   void  Clip    (void)  { if(x<0.0) x= 0.0; else if(x>1.0) x=1.0; }
+   void  AddMul  (float a, PFloat & p) {  x += a*p.x; }
+   void  SetZero (void ) { x = 0.0;  }
 
-   float toF( void ) { return x; };
+   float toF(void) { return x; };
  };
 
 inline PFloat operator*(float a,PFloat p) { p*=a; return p; }
@@ -82,7 +82,7 @@ public:
    Point & operator*= (float a) { x*=a;y*=a;z*=a;return *this;}
    Point   operator+  (Point p) { return p+=*this;}
    Point   operator-  (Point p) { p.x=x-p.x;p.y=y-p.y;p.z=z-p.z;return p;}
-   Point   operator-  (void   ) { Point p(-x,-y,-z);return p;}
+   Point   operator-  (void  ) { Point p(-x,-y,-z);return p;}
    float   operator*  (Point p) { return x*p.x + y*p.y + z*p.z;}
    Point   operator*  (float a) { Point p(x*a,y*a,z*a);return p;}
    
@@ -107,9 +107,9 @@ public:
    }
    
    void FromColor(long col) {
-      x = float( (col>>16) & 255 ) * ( 1.0/255.0 );
-      y = float( (col>>8 ) & 255 ) * ( 1.0/255.0 );
-      z = float( (col    ) & 255 ) * ( 1.0/255.0 );
+	  x = float((col>>16) & 255) * (1.0/255.0);
+	  y = float((col>>8) & 255) * (1.0/255.0);
+	  z = float((col   ) & 255) * (1.0/255.0);
    }
    
    void AddMul(float a, Point & p) {
@@ -154,7 +154,7 @@ public:
    Point4 & operator*= (float a)  { x*=a;y*=a;z*=a;w*=a; return *this;}
    Point4   operator+  (Point4 p) { return p+=*this;}
    Point4   operator-  (Point4 p) { p.x=x-p.x;p.y=y-p.y;p.z=z-p.z;p.w=w-p.w; return p;}
-   Point4   operator-  (void   )  { Point4 p(-x,-y,-z,-w); return p;}
+   Point4   operator-  (void  )  { Point4 p(-x,-y,-z,-w); return p;}
    float    operator*  (Point4 p) { return x*p.x + y*p.y + z*p.z + w*p.w;}
    Point4   operator*  (float a)  { Point4 p(x*a,y*a,z*a,w*a); return p;}
 
@@ -177,10 +177,10 @@ public:
    }
 
    void FromColor(long col) {    // ARGB
-      x = float( (col>>16) & 255 ) * ( 1.0/255.0 );
-      y = float( (col>>8 ) & 255 ) * ( 1.0/255.0 );
-      z = float( (col    ) & 255 ) * ( 1.0/255.0 );
-      w = float( (col>>24) & 255 ) * ( 1.0/255.0 );
+	  x = float((col>>16) & 255) * (1.0/255.0);
+	  y = float((col>>8) & 255) * (1.0/255.0);
+	  z = float((col   ) & 255) * (1.0/255.0);
+	  w = float((col>>24) & 255) * (1.0/255.0);
    }
 
    void AddMul(float a, Point4 & p) {
@@ -223,15 +223,15 @@ public:
    Point2(float x0,float y0) {x=x0;y=y0;}
    ~Point2(void) {}
 
-   Point2 & operator=  ( Point2 p ) { x=p.x;y=p.y;return *this;}
-   Point2 & operator+= ( Point2 p ) { x+=p.x;y+=p.y;return *this;}
-   Point2 & operator-= ( Point2 p ) { x-=p.x;y-=p.y;return *this;}
-   Point2 & operator*= ( float  a ) { x*=a;y*=a;return *this;}
-   Point2   operator+  ( Point2 p ) { return p+=*this;}
-   Point2   operator-  ( Point2 p ) { p.x=x-p.x;p.y=y-p.y;return p;}
-   Point2   operator-  ( void     ) { Point2 p(-x,-y);return p;}
-   float    operator*  ( Point2 p ) { return x*p.x + y*p.y;}
-   Point2   operator*  ( float  a ) { Point2 p(x*a,y*a);return p;}
+   Point2 & operator=  (Point2 p) { x=p.x;y=p.y;return *this;}
+   Point2 & operator+= (Point2 p) { x+=p.x;y+=p.y;return *this;}
+   Point2 & operator-= (Point2 p) { x-=p.x;y-=p.y;return *this;}
+   Point2 & operator*= (float  a) { x*=a;y*=a;return *this;}
+   Point2   operator+  (Point2 p) { return p+=*this;}
+   Point2   operator-  (Point2 p) { p.x=x-p.x;p.y=y-p.y;return p;}
+   Point2   operator-  (void    ) { Point2 p(-x,-y);return p;}
+   float    operator*  (Point2 p) { return x*p.x + y*p.y;}
+   Point2   operator*  (float  a) { Point2 p(x*a,y*a);return p;}
    
    bool    IsZero(void) {return x==0.0 && y==0.0 ;}
 
@@ -246,9 +246,9 @@ public:
       }
    }
 
-   float Norm (void) { return (1.0/2.0) * ( fabs(x) + fabs(y) ); }
+   float Norm (void) { return (1.0/2.0) * (fabs(x) + fabs(y)); }
    float Norm1(void) { return sqrt(x*x+y*y); }
-   void  Clip    ( void )  { }
+   void  Clip    (void)  { }
    void AddMul(float a, Point2 & p) {  x += a*p.x;  y += a*p.y;  }
    void SetZero(void) {  x = y = 0.0; }
 
@@ -257,7 +257,7 @@ public:
       float d = sqrt(x*x+y*y); 
       if(d==0.0) return Point2(0.0,0.0);
       d = 1.0/d;
-      q.x = ( x*x - y*y ) * d;
+	  q.x = (x*x - y*y) * d;
       q.y = 2*x*y  * d;
       return q;
    }
@@ -267,7 +267,7 @@ public:
       float d = (x*x+y*y); 
       if(d==0.0) return Point2(0.0,0.0);
       d = 1.0/d;
-      q.x = ( x*x - y*y ) * d;
+	  q.x = (x*x - y*y) * d;
       q.y = 2*x*y  * d;
       return q;
    }
@@ -279,7 +279,7 @@ public:
       d = 1.0/d;
       cc = x*d;
       ss = y*d;
-      if(cc > -0.8 && cc<0.8 ) {
+	  if(cc > -0.8 && cc<0.8) {
          phi = acos(cc)*360.0*(0.5/PI);
          if(ss<0.0)
             phi = 360.0 - phi;

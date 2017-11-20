@@ -33,16 +33,16 @@ class BasicArray {
 public:
    BasicArray(void)          : sizeX(0), sizeY(0)   { buf = 0; }
    BasicArray(int sx,int sy) : sizeX(sx), sizeY(sy) { buf = new T[sizeX*sizeY]; }
-   BasicArray( BasicArray<T> & aSrc);
+   BasicArray(BasicArray<T> & aSrc);
    ~BasicArray(void) { if(buf!=0) delete[] buf; }
 
-   BasicArray<T> &operator= ( BasicArray<T> & aSrc );
+   BasicArray<T> &operator= (BasicArray<T> & aSrc);
 
    T     Get(int x, int y) const { return buf[ x + y*sizeX ]; }
-   void  Set(int x, int y, T p )     { buf[ x + y*sizeX ] =  p; }
-   void  Add(int x, int y, T p )     { buf[ x + y*sizeX ] += p; }
-   void  Sub(int x, int y, T p )     { buf[ x + y*sizeX ] -= p; }
-   void  Mul(int x, int y, float f ) { buf[ x + y*sizeX ] *= f; }
+   void  Set(int x, int y, T p)     { buf[ x + y*sizeX ] =  p; }
+   void  Add(int x, int y, T p)     { buf[ x + y*sizeX ] += p; }
+   void  Sub(int x, int y, T p)     { buf[ x + y*sizeX ] -= p; }
+   void  Mul(int x, int y, float f) { buf[ x + y*sizeX ] *= f; }
    T     DX(int x, int y)  { return 0.5*(Get(x+1,y) - Get(x-1,y)); }
    T     DY(int x, int y)  { return 0.5*(Get(x,y+1) - Get(x,y-1)); }
    T     D2X(int x, int y) { return Get(x+1,y) + Get(x-1,y) - 2.0*Get(x,y); }
@@ -50,9 +50,9 @@ public:
    T     DXY(int x, int y) { return Get(x+1,y+1) - Get(x-1,y+1) - Get(x+1,y-1) + Get(x-1,y-1); }
    T     Laplace(int x,int y)  {
       T l;
-      l  = Get( x  , y-1 ) + Get( x-1, y   ) + Get( x+1, y   ) + Get( x  , y+1 );
+	  l  = Get(x  , y-1) + Get(x-1, y  ) + Get(x+1, y  ) + Get(x  , y+1);
       l*=2.0;
-      l += Get( x-1, y-1 ) + Get( x+1, y-1 ) + Get( x-1, y+1 ) + Get( x+1, y+1 );
+	  l += Get(x-1, y-1) + Get(x+1, y-1) + Get(x-1, y+1) + Get(x+1, y+1);
       l*=(1.0/12.0);
       return l - Get(x,y);
    }
@@ -61,7 +61,7 @@ public:
    int SizeY(void) const { return sizeY; }
    T *Buffer(void) { return buf; }
    
-   void ChangeSize( int sxNew, int syNew ) { 
+   void ChangeSize(int sxNew, int syNew) {
       sizeX = sxNew; sizeY = syNew;
       if(buf!=0) delete[] buf;
       buf = new T[sizeX*sizeY];
@@ -75,25 +75,25 @@ public:
       return clipArr;
    }
    
-   BasicArray<T> *SmoothDouble ( void );
-   BasicArray<T> *SmoothDoubleTorus ( void );
-   BasicArray<T> *ShrinkHalf   ( void );
-   BasicArray<T> *Shrink       ( int sizeXNew, int sizeYNew );
-   BasicArray<T> *BlockyPixEnlarge( int sizeXNew, int sizeYNew );
-   BasicArray<T> *SplitLowFreq ( int lenExp );
-   BasicArray<T> *Smooth       ( void );
-   void AddArray ( BasicArray<T> *arr );
-   void SubArray ( BasicArray<T> *arr );
-   void MulArray ( float f );
-   void Sharpen  ( float f );
-   void Smoothen ( void );
-   void Clamp01  ( void );
-   void ReduceNoise( float reduceF );
-   void HiSharpen ( float f );
+   BasicArray<T> *SmoothDouble (void);
+   BasicArray<T> *SmoothDoubleTorus (void);
+   BasicArray<T> *ShrinkHalf   (void);
+   BasicArray<T> *Shrink       (int sizeXNew, int sizeYNew);
+   BasicArray<T> *BlockyPixEnlarge(int sizeXNew, int sizeYNew);
+   BasicArray<T> *SplitLowFreq (int lenExp);
+   BasicArray<T> *Smooth       (void);
+   void AddArray (BasicArray<T> *arr);
+   void SubArray (BasicArray<T> *arr);
+   void MulArray (float f);
+   void Sharpen  (float f);
+   void Smoothen (void);
+   void Clamp01  (void);
+   void ReduceNoise(float reduceF);
+   void HiSharpen (float f);
 
 
 private:
-   T SmoothFunc(T p0, T p1, T p2) { return 0.0625*( 5.0*p0 + 10.0*p1 + p2 ); }
+   T SmoothFunc(T p0, T p1, T p2) { return 0.0625*(5.0*p0 + 10.0*p1 + p2); }
    void ReadLineSmoothDouble(int y,T *line);
    void ReadLineSmoothDoubleTorus(int y,T *line);
    void ShrinkLine(int y, float scaleF, int sizeXNew, T *line);

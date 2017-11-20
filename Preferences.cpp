@@ -34,7 +34,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-   : QDialog(parent), uiPref( new Ui::PreferencesDialog )
+   : QDialog(parent), uiPref(new Ui::PreferencesDialog)
 {
    uiPref->setupUi(this);
    typeGroup = new QButtonGroup();
@@ -43,51 +43,51 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
 
    uiPref->qualitySlider->setMinimum(1);
    uiPref->qualitySlider->setMaximum(100);
-   connect(uiPref->qualitySlider, SIGNAL(valueChanged(int)), uiPref->qualitySpinBox, SLOT(setValue(int)) );
-   connect(uiPref->qualitySpinBox,SIGNAL(valueChanged(int)), uiPref->qualitySlider,  SLOT(setValue(int)) );
-   connect(uiPref->typeComboBox,SIGNAL(activated(int)), this, SLOT(ComboChanged()) );
+   connect(uiPref->qualitySlider, SIGNAL(valueChanged(int)), uiPref->qualitySpinBox, SLOT(setValue(int)));
+   connect(uiPref->qualitySpinBox,SIGNAL(valueChanged(int)), uiPref->qualitySlider,  SLOT(setValue(int)));
+   connect(uiPref->typeComboBox,SIGNAL(activated(int)), this, SLOT(ComboChanged()));
 
 }
 
-PreferencesDialog::~PreferencesDialog( void ) {
+PreferencesDialog::~PreferencesDialog(void) {
    delete typeGroup;
    delete uiPref;
 }
 
-void PreferencesDialog::ReadSettings( QSettings *mySettings ) {
+void PreferencesDialog::ReadSettings(QSettings *mySettings) {
    QString dstType;
    int quality;
 
-   quality = mySettings->value( "output/quality", 90 ).toInt();
-   dstType = mySettings->value( "output/file-format", "" ).toString();
-   uiPref->qualitySlider->setValue( quality );
-   if( dstType.isEmpty() ) {
-      uiPref->srcTypeRadioButton->setChecked( true );
+   quality = mySettings->value("output/quality", 90).toInt();
+   dstType = mySettings->value("output/file-format", "").toString();
+   uiPref->qualitySlider->setValue(quality);
+   if(dstType.isEmpty()) {
+	  uiPref->srcTypeRadioButton->setChecked(true);
    }
    else {
-      int idx = uiPref->typeComboBox->findText ( dstType, Qt::MatchExactly );
-      if( idx == -1 ) {
-         uiPref->srcTypeRadioButton->setChecked( true );
+	  int idx = uiPref->typeComboBox->findText (dstType, Qt::MatchExactly);
+	  if(idx == -1) {
+		 uiPref->srcTypeRadioButton->setChecked(true);
       }
       else {
-         uiPref->otherTypeRadioButton->setChecked( true );
-         uiPref->typeComboBox->setCurrentIndex( idx );
+		 uiPref->otherTypeRadioButton->setChecked(true);
+		 uiPref->typeComboBox->setCurrentIndex(idx);
       }
    }
 }
 
-void PreferencesDialog::WriteSettings( QSettings *mySettings ) {
+void PreferencesDialog::WriteSettings(QSettings *mySettings) {
    QString dstType;
 
-   mySettings->setValue( "output/quality", uiPref->qualitySlider->value() );
+   mySettings->setValue("output/quality", uiPref->qualitySlider->value());
    dstType = "";
-   if( uiPref->otherTypeRadioButton->isChecked() ) {
+   if(uiPref->otherTypeRadioButton->isChecked()) {
       dstType = uiPref->typeComboBox->currentText();
    }
-   mySettings->setValue( "output/file-format", dstType );
+   mySettings->setValue("output/file-format", dstType);
 
 }
 
-void PreferencesDialog::ComboChanged( void ) {
-   uiPref->otherTypeRadioButton->setChecked( true );
+void PreferencesDialog::ComboChanged(void) {
+   uiPref->otherTypeRadioButton->setChecked(true);
 }

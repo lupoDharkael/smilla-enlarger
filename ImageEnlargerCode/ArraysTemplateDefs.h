@@ -28,7 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //   t.Clip()         : clamping
 //   t.Normalize()    :  t/Norm(t)
 //   t.Normalized()   :  t/Norm(t)
-//   t.AddMul( a, p ) :  t += a*p
+//   t.AddMul(a, p) :  t += a*p
 //   t.IsZero()
 //   t.SetZero()
 
@@ -43,7 +43,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 template<class T>
-BasicArray<T>::BasicArray( BasicArray<T> & aSrc) : sizeX(aSrc.sizeX) , sizeY(aSrc.sizeY) {
+BasicArray<T>::BasicArray(BasicArray<T> & aSrc) : sizeX(aSrc.sizeX) , sizeY(aSrc.sizeY) {
    buf = new T[sizeX*sizeY];
    
    int a = sizeX*sizeY;
@@ -54,8 +54,8 @@ BasicArray<T>::BasicArray( BasicArray<T> & aSrc) : sizeX(aSrc.sizeX) , sizeY(aSr
 }
 
 template<class T>
-BasicArray<T> & BasicArray<T>::operator= ( BasicArray<T> & aSrc ) {
-   ChangeSize( aSrc.sizeX, aSrc.sizeY );
+BasicArray<T> & BasicArray<T>::operator= (BasicArray<T> & aSrc) {
+   ChangeSize(aSrc.sizeX, aSrc.sizeY);
    int a = sizeX*sizeY;
    T *src = aSrc.buf, *dst = buf;
    while(a-- > 0)
@@ -79,16 +79,16 @@ void BasicArray<T>::CopyFromArray(BasicArray<T> *srcArr, int srcX,int srcY) {
       if(sx>0)
          src += sx;
       // while dst outside: write src-edge-pixel
-      while( sx<0 && x<sizeX ) {
+	  while(sx<0 && x<sizeX) {
          *(dst++) = *src;      x++; sx++;
       }
 
-      while( sx < srcArr->sizeX - 1 && x<sizeX ) {
+	  while(sx < srcArr->sizeX - 1 && x<sizeX) {
          *(dst++) = *(src++);  x++; sx++;
       }
 
       // while dst outside: write src-edge-pixel
-      while( x<sizeX ) {
+	  while(x<sizeX) {
          *(dst++) = *src;      x++; sx++;
       }
       y++;sy++;
@@ -100,16 +100,16 @@ void BasicArray<T>::CopyFromArray(BasicArray<T> *srcArr, int srcX,int srcY) {
       if(sx>0)
          src += sx;
       // while dst outside: write src-edge-pixel
-      while( sx<0 && x<sizeX ) {
+	  while(sx<0 && x<sizeX) {
          *(dst++) = *src;      x++; sx++;
       }
 
-      while( sx < srcArr->sizeX - 1 && x<sizeX ) {
+	  while(sx < srcArr->sizeX - 1 && x<sizeX) {
          *(dst++) = *(src++);  x++; sx++;
       }
 
       // while dst outside: write src-edge-pixel
-      while( x<sizeX ) {
+	  while(x<sizeX) {
          *(dst++) = *src;      x++; sx++;
       }
       y++;sy++;
@@ -122,16 +122,16 @@ void BasicArray<T>::CopyFromArray(BasicArray<T> *srcArr, int srcX,int srcY) {
       if(sx>0)
          src += sx;
       // while dst outside: write src-edge-pixel
-      while( sx<0 && x<sizeX ) {
+	  while(sx<0 && x<sizeX) {
          *(dst++) = *src;      x++; sx++;
       }
 
-      while( sx < srcArr->sizeX - 1 && x<sizeX ) {
+	  while(sx < srcArr->sizeX - 1 && x<sizeX) {
          *(dst++) = *(src++);  x++; sx++;
       }
 
       // while dst outside: write src-edge-pixel
-      while( x<sizeX ) {
+	  while(x<sizeX) {
          *(dst++) = *src;      x++; sx++;
       }
       y++;sy++;
@@ -143,21 +143,21 @@ BasicArray<T> *BasicArray<T>::SplitLowFreq(int lenExp) {
    int x,y;
    BasicArray<T> loArr((sizeX+(1<<lenExp))>>lenExp , (sizeY+(1<<lenExp))>>lenExp) ;
 
-   for (y=0; y<loArr.SizeY(); y++ )   {
-      for (x=0; x<loArr.SizeX(); x++ )   {
-         loArr.Set(x,y, T(0.0) );
+   for (y=0; y<loArr.SizeY(); y++)   {
+	  for (x=0; x<loArr.SizeX(); x++)   {
+		 loArr.Set(x,y, T(0.0));
       }
    }
    
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          loArr.Add(x>>lenExp,y>>lenExp,Get(x,y));
       }
    }
    float fFakt = 1.0/float(1<<(2*lenExp));
-   for (y=0; y<loArr.SizeY(); y++ )   {
-      for (x=0; x<loArr.SizeX(); x++ )   {
-         loArr.Set(x,y, loArr.Get(x,y)*fFakt );
+   for (y=0; y<loArr.SizeY(); y++)   {
+	  for (x=0; x<loArr.SizeX(); x++)   {
+		 loArr.Set(x,y, loArr.Get(x,y)*fFakt);
       }
    }
    BasicArray<T> *a2,*a3;
@@ -170,8 +170,8 @@ BasicArray<T> *BasicArray<T>::SplitLowFreq(int lenExp) {
 
    a3 = new BasicArray<T>(sizeX,sizeY);
 
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          T w =  a2->Get(x,y);
          a3->Set(x,y,w);
          w = (Get(x,y) - w);
@@ -187,8 +187,8 @@ BasicArray<T> *BasicArray<T>::SplitLowFreq(int lenExp) {
 template<class T>
 void BasicArray<T>::AddArray(BasicArray<T> *arr) {
    int x,y;
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          Add(x,y,arr->Get(x,y));
       }
    }
@@ -197,8 +197,8 @@ void BasicArray<T>::AddArray(BasicArray<T> *arr) {
 template<class T>
 void BasicArray<T>::SubArray(BasicArray<T> *arr) {
    int x,y;
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          Add(x,y,-arr->Get(x,y));
       }
    }
@@ -207,8 +207,8 @@ void BasicArray<T>::SubArray(BasicArray<T> *arr) {
 template<class T>
 void BasicArray<T>::MulArray(float f) {
    int x,y;
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          Mul(x,y,f);
       }
    }
@@ -218,22 +218,22 @@ template<class T>
 BasicArray<T> *BasicArray<T>::ShrinkHalf(void) {
    BasicArray<T> *halfArr;
    int x,y;
-   halfArr = new BasicArray<T>( (sizeX+1)>>1 , (sizeY+1)>>1 ) ;
+   halfArr = new BasicArray<T>((sizeX+1)>>1 , (sizeY+1)>>1) ;
 
-   for (y=0; y<halfArr->SizeY(); y++ )   {
-      for (x=0; x<halfArr->SizeX(); x++ )   {
-         halfArr->Set(x,y, T(0.0) );
+   for (y=0; y<halfArr->SizeY(); y++)   {
+	  for (x=0; x<halfArr->SizeX(); x++)   {
+		 halfArr->Set(x,y, T(0.0));
       }
    }
    
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          halfArr->Add(x>>1,y>>1,Get(x,y));
       }
    }
 
-   for (y=0; y<halfArr->SizeY(); y++ )   {
-      for (x=0; x<halfArr->SizeX(); x++ )   {
+   for (y=0; y<halfArr->SizeY(); y++)   {
+	  for (x=0; x<halfArr->SizeX(); x++)   {
          halfArr->Mul(x,y,0.25);
       }
    }
@@ -251,14 +251,14 @@ void BasicArray<T>::Sharpen(float f) {
    for(y=1;y<sizeY-1;y++) {
       for(x=1;x<sizeX-1;x++) {
          T l;
-         l  = src.Get( x  , y-1 ) + src.Get( x-1, y   );
-         l += src.Get( x+1, y   ) + src.Get( x  , y+1 );
+		 l  = src.Get(x  , y-1) + src.Get(x-1, y  );
+		 l += src.Get(x+1, y  ) + src.Get(x  , y+1);
          l*=2.0;
-         l += src.Get( x-1, y-1 ) + src.Get( x+1, y-1 );
-         l += src.Get( x-1, y+1 ) + src.Get( x+1, y+1 );
+		 l += src.Get(x-1, y-1) + src.Get(x+1, y-1);
+		 l += src.Get(x-1, y+1) + src.Get(x+1, y+1);
          l*=(1.0/12.0);
-         l -= src.Get( x  , y   );
-         l = src.Get( x  , y   ) - f*l;
+		 l -= src.Get(x  , y  );
+		 l = src.Get(x  , y  ) - f*l;
          Set(x,y,l);
       }
    }
@@ -287,15 +287,15 @@ BasicArray<T> *BasicArray<T>::SmoothDouble(void) {
          ReadLineSmoothDouble(y+1,line2);
       else
          ReadLineSmoothDouble(y  ,line2);
-      for( int x=0;x<2*sizeX;x++) {
+	  for(int x=0;x<2*sizeX;x++) {
          T p0,p1,p2,p;
          p0 = line0[x];
          p1 = line1[x];
          p2 = line2[x];
          p = SmoothFunc(p0,p1,p2);
-         newArray->Set( x, 2*y   , p ); 
+		 newArray->Set(x, 2*y   , p);
          p = SmoothFunc(p2,p1,p0);
-         newArray->Set( x, 2*y+1 , p ); 
+		 newArray->Set(x, 2*y+1 , p);
       }
    }
    delete[] line0;
@@ -352,15 +352,15 @@ BasicArray<T> *BasicArray<T>::SmoothDoubleTorus(void) {
          ReadLineSmoothDoubleTorus(y+1,line2);
       else
          ReadLineSmoothDoubleTorus(0  ,line2);
-      for( int x=0;x<2*sizeX;x++) {
+	  for(int x=0;x<2*sizeX;x++) {
          T p0,p1,p2,p;
          p0 = line0[x];
          p1 = line1[x];
          p2 = line2[x];
          p = SmoothFunc(p0,p1,p2);
-         newArray->Set( x, 2*y   , p );
+		 newArray->Set(x, 2*y   , p);
          p = SmoothFunc(p2,p1,p0);
-         newArray->Set( x, 2*y+1 , p );
+		 newArray->Set(x, 2*y+1 , p);
       }
    }
    delete[] line0;
@@ -403,12 +403,12 @@ BasicArray<T> *BasicArray<T>::Smooth(void) {
    int x,y;
    BasicArray<T> *a4 = new BasicArray<T>(sizeX,sizeY);
 
-   for (y=1; y<sizeY-1; y++ )   {
-      for (x=1; x<sizeX-1; x++ )   {
+   for (y=1; y<sizeY-1; y++)   {
+	  for (x=1; x<sizeX-1; x++)   {
          T pSmooth;
          
          pSmooth  =       Get(x-1,y-1) + 2.0*Get(x  ,y-1) + Get(x+1,y-1);
-         pSmooth += 2.0*( Get(x-1,y  ) + 2.0*Get(x  ,y  ) + Get(x+1,y  ) );
+		 pSmooth += 2.0*(Get(x-1,y ) + 2.0*Get(x  ,y ) + Get(x+1,y ));
          pSmooth +=       Get(x-1,y+1) + 2.0*Get(x  ,y+1) + Get(x+1,y+1);
          pSmooth*=0.0625;
          a4->Set(x,y,pSmooth);
@@ -422,12 +422,12 @@ void BasicArray<T>::Smoothen(void) {
    int x,y;
    BasicArray<T> src(*this);
 
-   for (y=1; y<sizeY-1; y++ )   {
-      for (x=1; x<sizeX-1; x++ )   {
+   for (y=1; y<sizeY-1; y++)   {
+	  for (x=1; x<sizeX-1; x++)   {
          T pSmooth;
          
          pSmooth  =       src.Get(x-1,y-1) + 2.0*src.Get(x  ,y-1) + src.Get(x+1,y-1);
-         pSmooth += 2.0*( src.Get(x-1,y  ) + 2.0*src.Get(x  ,y  ) + src.Get(x+1,y  ) );
+		 pSmooth += 2.0*(src.Get(x-1,y ) + 2.0*src.Get(x  ,y ) + src.Get(x+1,y ));
          pSmooth +=       src.Get(x-1,y+1) + 2.0*src.Get(x  ,y+1) + src.Get(x+1,y+1);
          pSmooth*=0.0625;
          Set(x,y,pSmooth);
@@ -453,24 +453,24 @@ BasicArray<T> *BasicArray<T>::Shrink(int sizeXNew, int sizeYNew) {
    yBig = 0;
    floorY = 0.0;
    for(y=0;y<sizeY-1;y++) {
-      ShrinkLine( y, scaleX, sizeXNew, line);
+	  ShrinkLine(y, scaleX, sizeXNew, line);
       ff = floorY + scaleY - 1.0;
       if(ff>0) {  // stepping into new bigPixel reached
          for(xBig=0;xBig<sizeXNew;xBig++) {
-            dst->Add( xBig, yBig  , ( scaleY - ff )*line[xBig] );
-            dst->Add( xBig, yBig+1, ff*line[xBig] );
+			dst->Add(xBig, yBig  , (scaleY - ff)*line[xBig]);
+			dst->Add(xBig, yBig+1, ff*line[xBig]);
          }
          floorY-=1.0;
          ++yBig;
       }
       else
          for(xBig=0;xBig<sizeXNew;xBig++)
-             dst->Add( xBig, yBig  , scaleY*line[xBig] );
+			 dst->Add(xBig, yBig  , scaleY*line[xBig]);
       floorY += scaleY;
    }
-   ShrinkLine( sizeY-1, scaleX, sizeXNew, line);
+   ShrinkLine(sizeY-1, scaleX, sizeXNew, line);
    for(xBig=0;xBig<sizeXNew;xBig++)
-       dst->Add( xBig, sizeYNew-1, scaleY*line[xBig] );
+	   dst->Add(xBig, sizeYNew-1, scaleY*line[xBig]);
 
    delete[] line;
    return dst;
@@ -489,7 +489,7 @@ void BasicArray<T>::ShrinkLine(int y, float scaleF, int sizeXNew, T *line) {
    for(x=0;x<sizeX-1;x++) {
       float ff = floorX + scaleF - 1.0;
       if(ff>0) {  // stepping into new bigPixel reached
-         line[xBig] += ( scaleF - ff )*Get(x,y);
+		 line[xBig] += (scaleF - ff)*Get(x,y);
          ++xBig;
          floorX-=1.0;
          line[xBig] += ff*Get(x,y);
@@ -526,28 +526,28 @@ BasicArray<T> *BasicArray<T>::BlockyPixEnlarge(int sizeXNew, int sizeYNew) {
          
          T val,val1;
 
-         if( ffx > 0.0 ) {
+		 if(ffx > 0.0) {
             val = (1.0 - ffx) * Get(xSrc,ySrc) + ffx*Get(xSrc+1,ySrc);
-            if( ffy > 0.0 ) {
+			if(ffy > 0.0) {
                val1 = (1.0 - ffx) * Get(xSrc,ySrc+1) + ffx*Get(xSrc+1,ySrc+1);
                val += ffy*(val1-val);
             }
          }
          else {
             val = Get(xSrc,ySrc);
-            if( ffy > 0.0 )
-               val += ffy*( Get(xSrc,ySrc+1) - val );
+			if(ffy > 0.0)
+			   val += ffy*(Get(xSrc,ySrc+1) - val);
          }
       
          dst->Set(x,y,val);
          floorX += scaleX;
-         if( floorX>= 1.0 ) {
+		 if(floorX>= 1.0) {
             floorX-=1.0;
             xSrc++;
          }
       }
       floorY += scaleY;
-      if( floorY>= 1.0 ) {
+	  if(floorY>= 1.0) {
          floorY-=1.0;
          ySrc++;
       }
@@ -560,8 +560,8 @@ template<class T>
 void BasicArray<T>::Clamp01(void) {
    int x,y;
    int sizeX = SizeX(), sizeY = SizeY();
-   for (y=0; y<sizeY; y++ )   {
-      for (x=0; x<sizeX; x++ )   {
+   for (y=0; y<sizeY; y++)   {
+	  for (x=0; x<sizeX; x++)   {
          T p = Get(x,y);
          p.Clip();
          Set(x,y,p);
@@ -580,16 +580,16 @@ void BasicArray<T>::HiSharpen(float f) {
       for(x=1;x<sizeX-1;x++) {
          float dd=0.0,ff;
          T   l,c;
-         c = src.Get( x  , y );
-         l = src.Get( x  , y-1 ) - c; dd+=l.Norm1();
-         l = src.Get( x-1, y   ) - c; dd+=l.Norm1();
-         l = src.Get( x+1, y   ) - c; dd+=l.Norm1();
-         l = src.Get( x  , y+1 ) - c; dd+=l.Norm1();
+		 c = src.Get(x  , y);
+		 l = src.Get(x  , y-1) - c; dd+=l.Norm1();
+		 l = src.Get(x-1, y  ) - c; dd+=l.Norm1();
+		 l = src.Get(x+1, y  ) - c; dd+=l.Norm1();
+		 l = src.Get(x  , y+1) - c; dd+=l.Norm1();
          dd*=2.0;
-         l = src.Get( x-1, y-1 ) - c; dd+=l.Norm1();
-         l = src.Get( x+1, y-1 ) - c; dd+=l.Norm1();
-         l = src.Get( x-1, y+1 ) - c; dd+=l.Norm1();
-         l = src.Get( x+1, y+1 ) - c; dd+=l.Norm1();
+		 l = src.Get(x-1, y-1) - c; dd+=l.Norm1();
+		 l = src.Get(x+1, y-1) - c; dd+=l.Norm1();
+		 l = src.Get(x-1, y+1) - c; dd+=l.Norm1();
+		 l = src.Get(x+1, y+1) - c; dd+=l.Norm1();
          dd*=(1.0/12.0);
 
          dd = 10.0*f*dd;
@@ -599,7 +599,7 @@ void BasicArray<T>::HiSharpen(float f) {
 
          ff = c.Norm1();
          ff = 1.0/(10.0*ff+ 0.001) - 1.0/3.0001;
-         Mul( x, y, 1.0 + 0.2*dd*ff );
+		 Mul(x, y, 1.0 + 0.2*dd*ff);
       }
    }
 }
@@ -638,7 +638,7 @@ void BasicArray<T>::ReduceNoise(float reduceF) {
             w =  1.1*(w - 1.0) + 1.0;
 
             p *= (1.0 - w);
-            Sub( x, y, p );
+			Sub(x, y, p);
          }
       }
    }

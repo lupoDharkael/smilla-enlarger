@@ -162,7 +162,7 @@
                    <enum>Qt::ClickFocus</enum>
                   </property>
                   <property name="toolTip">
-                   <string>Set the scaling factor ( in percent ).</string>
+                   <string>Set the scaling factor (in percent).</string>
                   </property>
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
@@ -206,7 +206,7 @@
                      </font>
                     </property>
                     <property name="toolTip">
-                     <string>Set the scaling factor ( in percent ).</string>
+                     <string>Set the scaling factor (in percent).</string>
                     </property>
                     <property name="maximum">
                      <number>999</number>

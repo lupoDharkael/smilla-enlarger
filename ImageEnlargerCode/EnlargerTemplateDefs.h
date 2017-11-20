@@ -56,7 +56,7 @@ using namespace std;
 //      might lead to black borders outside the cliprect
 
 template<class T>
-BasicEnlarger<T>::BasicEnlarger( const EnlargeFormat & format, const EnlargeParameter & param ) {
+BasicEnlarger<T>::BasicEnlarger(const EnlargeFormat & format, const EnlargeParameter & param) {
    // int srcSizeX, int srcSizeY, float scaleF) {
    int a;
    sizeX = format.srcWidth;
@@ -80,40 +80,40 @@ BasicEnlarger<T>::BasicEnlarger( const EnlargeFormat & format, const EnlargePara
 
    outputWidth  = format.ClipW();
    outputHeight = format.ClipH();
-   CalculateClipAndOffset( format );
-   onlyShrinking = ( scaleFaktX < 1.0  && scaleFaktY < 1.0 );
+   CalculateClipAndOffset(format);
+   onlyShrinking = (scaleFaktX < 1.0  && scaleFaktY < 1.0);
 
    randGen = new RandGen(635017,934021);
    smallToBigTabX  = new int[sizeXDst + 2*smallToBigMargin];
    smallToBigTabY  = new int[sizeYDst + 2*smallToBigMargin];
-   for( a=0; a<sizeXDst+2*smallToBigMargin; a++ ) {
-       smallToBigTabX[a] = int( float(a-smallToBigMargin)*invScaleFaktX );
+   for(a=0; a<sizeXDst+2*smallToBigMargin; a++) {
+	   smallToBigTabX[a] = int(float(a-smallToBigMargin)*invScaleFaktX);
    }
-   for( a=0; a<sizeYDst+2*smallToBigMargin; a++ ) {
-       smallToBigTabY[a] = int( float(a-smallToBigMargin)*invScaleFaktY );
+   for(a=0; a<sizeYDst+2*smallToBigMargin; a++) {
+	   smallToBigTabY[a] = int(float(a-smallToBigMargin)*invScaleFaktY);
    }
 
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
    sizeDstBlock = blockLen;
-   sizeSrcBlockX = int ( invScaleFaktX * float(sizeDstBlock) + 0.5) + 2*srcBlockMargin;
-   sizeSrcBlockY = int ( invScaleFaktY * float(sizeDstBlock) + 0.5) + 2*srcBlockMargin;
-   srcBlock = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
-   dstBlock = new BasicArray<T>( sizeDstBlock, sizeDstBlock );
+   sizeSrcBlockX = int (invScaleFaktX * float(sizeDstBlock) + 0.5) + 2*srcBlockMargin;
+   sizeSrcBlockY = int (invScaleFaktY * float(sizeDstBlock) + 0.5) + 2*srcBlockMargin;
+   srcBlock = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
+   dstBlock = new BasicArray<T>(sizeDstBlock, sizeDstBlock);
 
-   baseWeights   = new MyArray( sizeSrcBlockX, sizeSrcBlockY );
-   workMask      = new MyArray( sizeSrcBlockX, sizeSrcBlockY );
-   baseParams    = new MyArray( sizeSrcBlockX, sizeSrcBlockY );
-   baseIntensity = new MyArray( sizeSrcBlockX, sizeSrcBlockY );
-   workMaskDst   = new MyArray( sizeDstBlock,  sizeDstBlock  );
+   baseWeights   = new MyArray(sizeSrcBlockX, sizeSrcBlockY);
+   workMask      = new MyArray(sizeSrcBlockX, sizeSrcBlockY);
+   baseParams    = new MyArray(sizeSrcBlockX, sizeSrcBlockY);
+   baseIntensity = new MyArray(sizeSrcBlockX, sizeSrcBlockY);
+   workMaskDst   = new MyArray(sizeDstBlock,  sizeDstBlock );
 
-   dX  = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
-   dY  = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
-   d2X = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
-   d2Y = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
-   dXY = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
-   d2L = new BasicArray<T>( sizeSrcBlockX, sizeSrcBlockY );
+   dX  = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
+   dY  = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
+   d2X = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
+   d2Y = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
+   dXY = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
+   d2L = new BasicArray<T>(sizeSrcBlockX, sizeSrcBlockY);
 
    selectDiffTab = new float[diffTabLen];
    centerWeightTab = new float[diffTabLen];
@@ -130,11 +130,11 @@ BasicEnlarger<T>::BasicEnlarger( const EnlargeFormat & format, const EnlargePara
    enlargeKernelY = new float*[sizeYDst];
    selectKernelX  = new float*[sizeXDst];
    selectKernelY  = new float*[sizeYDst];
-   for( a=0; a<sizeXDst; a++ ) {
+   for(a=0; a<sizeXDst; a++) {
       enlargeKernelX[a] = new float[ 5 ];
       selectKernelX[a]  = new float[ 5 ];
    }
-   for( a=0; a<sizeYDst; a++ ) {
+   for(a=0; a<sizeYDst; a++) {
       enlargeKernelY[a] = new float[ 5 ];
       selectKernelY[a]  = new float[ 5 ];
    }
@@ -154,34 +154,34 @@ BasicEnlarger<T>::BasicEnlarger( const EnlargeFormat & format, const EnlargePara
    preSharpenF = 0.0;
    fractNoiseF = 0.0;
 
-   SetParameter( param );
+   SetParameter(param);
    CreateKernels();
    CreateDiffTabs();
 
    fractTab = 0;   // fractTab has to be imported with SetFractTab
 }
 
-// format.clip allows exceeding bounds ( for black margins )
+// format.clip allows exceeding bounds (for black margins)
 // this is converted to new cliprect within bounds and additional offset
 template<class T>
-void BasicEnlarger<T>::CalculateClipAndOffset( const EnlargeFormat & format ) {
+void BasicEnlarger<T>::CalculateClipAndOffset(const EnlargeFormat & format) {
    clipX0 = format.clipX0;
    clipY0 = format.clipY0;
    clipX1 = format.clipX1;
    clipY1 = format.clipY1;
    offsetX = offsetY = 0;
-   if( clipX0 < 0 ) {
+   if(clipX0 < 0) {
       offsetX = -clipX0;
       clipX0 = 0;
    }
-   if( clipY0 < 0 ) {
+   if(clipY0 < 0) {
       offsetY = -clipY0;
       clipY0 = 0;
    }
-   if( clipX1 > sizeXDst ) {
+   if(clipX1 > sizeXDst) {
       clipX1 = sizeXDst;
    }
-   if( clipY1 > sizeYDst ) {
+   if(clipY1 > sizeYDst) {
       clipY1 = sizeYDst;
    }
 }
@@ -194,14 +194,14 @@ BasicEnlarger<T>::~BasicEnlarger(void) {
    delete[] smallToBigTabX;
    delete[] smallToBigTabY;
 
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
-   for( a=0; a<sizeXDst; a++) {
+   for(a=0; a<sizeXDst; a++) {
       delete[] enlargeKernelX[a];
       delete[] selectKernelX[a];
    }
-   for( a=0; a<sizeYDst; a++) {
+   for(a=0; a<sizeYDst; a++) {
       delete[] enlargeKernelY[a];
       delete[] selectKernelY[a];
    }
@@ -233,17 +233,17 @@ BasicEnlarger<T>::~BasicEnlarger(void) {
 
 // example for enlarging the clip-rect
 template<class T>
-void BasicEnlarger<T>::Enlarge( void ) {
+void BasicEnlarger<T>::Enlarge(void) {
    int dstX,dstY;
 
-   if( OnlyShrinking() ) {
+   if(OnlyShrinking()) {
       ShrinkClip();
       return;
    }
 
-   for( dstY = ClipY0(); dstY < ClipY1(); dstY+=blockLen) {
-      for( dstX = ClipX0(); dstX < ClipX1(); dstX+=blockLen) {
-         BlockBegin( dstX, dstY);
+   for(dstY = ClipY0(); dstY < ClipY1(); dstY+=blockLen) {
+	  for(dstX = ClipX0(); dstX < ClipX1(); dstX+=blockLen) {
+		 BlockBegin(dstX, dstY);
          ReadSrcBlock();
          SrcBlockReduceNoise();
          SrcBlockSharpen();
@@ -268,7 +268,7 @@ void BasicEnlarger<T>::SetParameter(float sharpness, float flatness) {
    const float cWE_list1[listLen]      = {  6.0,  5.0,  4.5,  4.0,  3.0,  2.0,  2.0  };
    const float sPE_list1[listLen]      = {  4.0,  3.5,  2.5,  1.5,  1.2,  1.0,  1.0  };
 
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
    if(sharpness<0.0)sharpness = 0.0;
@@ -304,44 +304,44 @@ void BasicEnlarger<T>::SetParameter(float sharpness, float flatness) {
 }
 
 template<class T>
-void BasicEnlarger<T>::SetParameter( const EnlargeParameter & p) {
-    SetParameter( p.sharp, p.flat );
-    SetDeNoise ( p.deNoise );
-    SetPreSharpen ( p.preSharp );
-    SetDither( p.dither );
-    SetFractNoise( p.fractNoise );
+void BasicEnlarger<T>::SetParameter(const EnlargeParameter & p) {
+	SetParameter(p.sharp, p.flat);
+	SetDeNoise (p.deNoise);
+	SetPreSharpen (p.preSharp);
+	SetDither(p.dither);
+	SetFractNoise(p.fractNoise);
 }
 
 template<class T>
 void BasicEnlarger<T>::EnlargeBlock(void) {
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
    CalcBaseWeights();
    BlockEnlargeSmooth();
    MaskBlockEnlargeSmooth();
-   EnlargeBlockPart( dstMinBY, dstMaxBY );
+   EnlargeBlockPart(dstMinBY, dstMaxBY);
    AddRandom ();
    dstBlock->Clamp01();
 }
 
 template<class T>
-void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
+void BasicEnlarger<T>::EnlargeBlockPart(int dstStartBY, int dstEndBY) {
    int dstBX, dstBY, srcBX, srcBY, srcBXNew;
    float *kerX,*kerY;
    T      modColor[25];
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
    // for each pixel in dstBlock:
    // get neighbouring BigPixels and their simil & indie weights (ReadBigPixelNeighs)
-   // get weighting kernels for sx and sy pos                    ( kerX, kerY )
-   // get the prev.calc. smooth-enlarged color at (dstBX,dstBY)  ( smallColor )
+   // get weighting kernels for sx and sy pos                    (kerX, kerY)
+   // get the prev.calc. smooth-enlarged color at (dstBX,dstBY)  (smallColor)
    // weight all neigh. bigPixels with
    //        their indies & simils
    //        the kernel kerX*kerY
    //        the weight resulting from difference of
-   //          bigPixelColor and smallColor                       ( SelectWeight )
+   //          bigPixelColor and smallColor                       (SelectWeight)
    // sum up all weighted colors and return
    //    lincomb with smoothEnlarged smallColor
 
@@ -354,41 +354,41 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
    int a,ax,ay;
    bool lastPixelWasCalculated;   // used for quadric-refreshing
 
-   if( dstStartBY < dstMinBY )
+   if(dstStartBY < dstMinBY)
        dstStartBY = dstMinBY;
-   if( dstEndBY > dstMaxBY )
+   if(dstEndBY > dstMaxBY)
        dstEndBY = dstMaxBY;
-   for(dstBY = dstStartBY; dstBY < dstEndBY ; dstBY++ ) {
+   for(dstBY = dstStartBY; dstBY < dstEndBY ; dstBY++) {
       kerY = selectKernelY[dstBY + dstBlockEdgeY];
 
-      srcBX = CurrentSrcBlockX( 0 );
-      srcBY = CurrentSrcBlockY( dstBY );
+	  srcBX = CurrentSrcBlockX(0);
+	  srcBY = CurrentSrcBlockY(dstBY);
       srcYm2  = srcBY - 2 + srcBlockEdgeY;
-      fy = float( dstBY + dstBlockEdgeY )*invScaleFaktY  - float( srcYm2 ) - 0.25;
+	  fy = float(dstBY + dstBlockEdgeY)*invScaleFaktY  - float(srcYm2) - 0.25;
 
-      ReadBigPixelNeighs( srcBX, srcBY );
+	  ReadBigPixelNeighs(srcBX, srcBY);
 
       lastPixelWasCalculated = false;   // quadric: a fresh start for a new row
-      for( dstBX = dstMinBX; dstBX<dstMaxBX ; dstBX++ ) {
+	  for(dstBX = dstMinBX; dstBX<dstMaxBX ; dstBX++) {
          kerX = selectKernelX[dstBX + dstBlockEdgeX];
-         srcBXNew = CurrentSrcBlockX( dstBX );
+		 srcBXNew = CurrentSrcBlockX(dstBX);
          srcXm2 = srcBXNew - 2 + srcBlockEdgeX;
-         fx = float( dstBX + dstBlockEdgeX )*invScaleFaktX  - float( srcXm2 ) - 0.25;
+		 fx = float(dstBX + dstBlockEdgeX)*invScaleFaktX  - float(srcXm2) - 0.25;
 
-         if( srcBXNew > srcBX ) { // do we step forward in the src-system?
+		 if(srcBXNew > srcBX) { // do we step forward in the src-system?
             // in this case: refresh the src-neighbour-mat
             // the matrix of 5x5 quadric-datas has to be shifted,
             // the last column is calculated
             srcBX = srcBXNew;
-            ReadBigPixelNeighs( srcBX, srcBY );
+			ReadBigPixelNeighs(srcBX, srcBY);
 
             // if the last pixel was not calculated, then all
             // quadrics are newly initialized further down, else:
             // shift the quadric-data by one to the left
-            if( derivF>0.0 && lastPixelWasCalculated ) {
+			if(derivF>0.0 && lastPixelWasCalculated) {
                a=0;
-               for( ay=0; ay<5; ay++ ) {
-                  for( ax=0; ax<4; ax++ ) {
+			   for(ay=0; ay<5; ay++) {
+				  for(ax=0; ax<4; ax++) {
                      quadric[a]   = quadric[a+1];
                      quadDelta[a] = quadDelta[a+1];
                      quadD2[a]    = quadD2[a+1];
@@ -407,11 +407,11 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
                }
             }
          }
-         else if( derivF>0.0 && lastPixelWasCalculated ) {
+		 else if(derivF>0.0 && lastPixelWasCalculated) {
             // increment the quadric-data
             a=0;
-            for( ay=0; ay<5; ay++ ) {
-               for( ax=0; ax<5; ax++ ) {
+			for(ay=0; ay<5; ay++) {
+			   for(ax=0; ax<5; ax++) {
                   quadric[a]   += quadDelta[a];
                   quadDelta[a] += quadD2[a];
                   a++;
@@ -420,14 +420,14 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
          }
 
          // Modify One Small Pixel at (dstBX,dstBY) with smallColor
-         T     smallColor = dstBlock->Get( dstBX , dstBY );
+		 T     smallColor = dstBlock->Get(dstBX , dstBY);
 
          // for diffCalc fract-modify smallColor
          T     smallColorFract = smallColor;
 
-         if( fractTab != 0 && fractNoiseF > 0.0 ) {
-            float wf = MyFractTab()->GetT( dstBX + DstBlockEdgeX(), dstBY + DstBlockEdgeY() );
-            smallColorFract += ( fractNoiseF*0.01*wf )*smallColorFract;
+		 if(fractTab != 0 && fractNoiseF > 0.0) {
+			float wf = MyFractTab()->GetT(dstBX + DstBlockEdgeX(), dstBY + DstBlockEdgeY());
+			smallColorFract += (fractNoiseF*0.01*wf)*smallColorFract;
             smallColorFract.Clip();
          }
 
@@ -436,7 +436,7 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
          float wMask = 1.0;
          T     color,diff;
 
-         wMask = workMaskDst->GetF( dstBX, dstBY ) - 0.01;
+		 wMask = workMaskDst->GetF(dstBX, dstBY) - 0.01;
          if(wMask>0.0) {
             wMask *= 1.5;
             if(wMask>1.0)
@@ -448,10 +448,10 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
 
             // if last pixel was not in the mask:
             // initialize the 5x5 quadrics
-            if( derivF>0.0 && !lastPixelWasCalculated ) {
+			if(derivF>0.0 && !lastPixelWasCalculated) {
                a=0;
-               for( ay=0; ay<5; ay++ ) {
-                  for( ax=0; ax<5; ax++ ) {
+			   for(ay=0; ay<5; ay++) {
+				  for(ax=0; ax<5; ax++) {
                      float px = fx - float(ax);
                      float py = fy - float(ay);
                      QuadricCalc(px, py, a, deltaX, quadric[a], quadDelta[a], quadD2[a]);
@@ -463,8 +463,8 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
 
             a=0;
             // weight the 5x5 source pixels
-            for( int ay=0; ay<5; ay++ ) {
-               for( int ax=0; ax<5; ax++ ) {
+			for(int ay=0; ay<5; ay++) {
+			   for(int ax=0; ax<5; ax++) {
                   if(derivF > 0.0) {
                      modColor[a] = quadric[a]  + bigPixelColor[a];
                      w = derivDiffF*quadric[a].Norm1();
@@ -477,49 +477,49 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
 
                   //diff = modColor[a] - smallColor;
                   diff = modColor[a] - smallColorFract;
-                  w  = 10.0 * ( w + diff.Norm1() ) * bigPixelIntensity[a];
-                  w = bigPixelWeight[a] * kerX[ax] * kerY[ay] * SelectWeight( w );
+				  w  = 10.0 * (w + diff.Norm1()) * bigPixelIntensity[a];
+				  w = bigPixelWeight[a] * kerX[ax] * kerY[ay] * SelectWeight(w);
 
                   // give bigPixel add. Weigt near center
                   float px = fx - float(ax);
                   float py = fy - float(ay);
                   float ww = bigPixelCenterW[a];
-                  ww = 1.0 + ( CenterWeight(px*px + py*py) - 1.0 )*ww;
+				  ww = 1.0 + (CenterWeight(px*px + py*py) - 1.0)*ww;
                   w *=  ww;
 
 
 
                   // deform the weight via fractTab,
                   // for each srcPixel we have deform-kernel
-                  // ( FractCX,FractCY,FractCVal : center pos & center val in fractTab )
+				  // (FractCX,FractCY,FractCVal : center pos & center val in fractTab)
                   // kernel was selected by randomizing the coord of the srcPixel
-                  if( fractTab != 0 && fractNoiseF > 0.0 ) {
+				  if(fractTab != 0 && fractNoiseF > 0.0) {
                      int dx = int(px*scaleFaktX) + bigPixelFractCX[a];
                      int dy = int(py*scaleFaktY) + bigPixelFractCY[a];
-                     ww = 1.0 + 1.5*fractNoiseF*( fractTab->GetT( dx, dy ) - bigPixelFractCVal[a]) ;
+					 ww = 1.0 + 1.5*fractNoiseF*(fractTab->GetT(dx, dy) - bigPixelFractCVal[a]) ;
 
-                     if( ww<0.01 )
-                        ww = 0.01 + ( 0.01 - ww );
-                     if( ww>3.0 )
-                        ww = 3.0 - ( ww - 3.0 );
-                     if( ww<0.01 )
-                        ww = 0.01 + ( 0.01 - ww );
+					 if(ww<0.01)
+						ww = 0.01 + (0.01 - ww);
+					 if(ww>3.0)
+						ww = 3.0 - (ww - 3.0);
+					 if(ww<0.01)
+						ww = 0.01 + (0.01 - ww);
                      w *= ww;
                   }
                   /*
                   // wavy special effect
                   float sdx = bigPixelDX[a].x;
                   float sdy = bigPixelDY[a].x;
-                  float sd = sqrt( sdx*sdx + sdy*sdy );
+				  float sd = sqrt(sdx*sdx + sdy*sdy);
                   if(sd>0) {
                      float sdd = 1.0/sd;
                      sdx*=sdd;
                      sdy*=sdd;
                      sd *= 10.0;
-                     if( sd>0.5 )
+					 if(sd>0.5)
                         sd=0.5;
                   }
-                  ww = 1.0 + sd*cos( 10.0*(sdx*px + sdy*py) );
+				  ww = 1.0 + sd*cos(10.0*(sdx*px + sdy*py));
                   modColor[a] *= ww;
                   */
 
@@ -534,10 +534,10 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
             color.SetZero();
             colorR.SetZero();
 
-            for( a=0; a<25; a++ )
+			for(a=0; a<25; a++)
                 wMat[a] *= normF;
 
-            for( a=0; a<25; a++ ) {
+			for(a=0; a<25; a++) {
                 color.AddMul(wMat[a],modColor[a]); //color += modColor[a]*wMat[a];
             }
 
@@ -545,7 +545,7 @@ void BasicEnlarger<T>::EnlargeBlockPart( int dstStartBY, int dstEndBY ) {
             smallColor += diff*wMask;
 
          }
-         dstBlock->Set( dstBX , dstBY, smallColor );
+		 dstBlock->Set(dstBX , dstBY, smallColor);
       }
    }
 }
@@ -557,28 +557,28 @@ void BasicEnlarger<T>::BlockBegin(int dstXEdge,int dstYEdge) {
    dstBlockEdgeX = dstXEdge;
    dstBlockEdgeY = dstYEdge;
    // bigPos of upper left edge of   SrcBlock: add margin
-   srcBlockEdgeX = BigSrcPosX( dstXEdge) - srcBlockMargin;
-   srcBlockEdgeY = BigSrcPosY( dstYEdge) - srcBlockMargin;
+   srcBlockEdgeX = BigSrcPosX(dstXEdge) - srcBlockMargin;
+   srcBlockEdgeY = BigSrcPosY(dstYEdge) - srcBlockMargin;
 
    // calculate clipping
    dstMinBX=0; dstMaxBX=sizeDstBlock;
    dstMinBY=0; dstMaxBY=sizeDstBlock;
-   if( dstBlockEdgeX < clipX0 )
+   if(dstBlockEdgeX < clipX0)
       dstMinBX = clipX0 - dstBlockEdgeX;
-   if( dstBlockEdgeY < clipY0 )
+   if(dstBlockEdgeY < clipY0)
       dstMinBY = clipY0 - dstBlockEdgeY;
-   if( dstBlockEdgeX + sizeDstBlock >= clipX1 )
+   if(dstBlockEdgeX + sizeDstBlock >= clipX1)
       dstMaxBX = clipX1 - dstBlockEdgeX;
-   if( dstBlockEdgeY + sizeDstBlock >= clipY1 )
+   if(dstBlockEdgeY + sizeDstBlock >= clipY1)
       dstMaxBY = clipY1 - dstBlockEdgeY;
 }
 
 template<class T>
-void BasicEnlarger<T>::ReadSrcBlock( void ) {
+void BasicEnlarger<T>::ReadSrcBlock(void) {
    // copy data, pos outside src is ok, filled with margin-data
-   //srcBlock->CopyFromArray(src, SrcBlockEdgeX(), SrcBlockEdgeY() );
+   //srcBlock->CopyFromArray(src, SrcBlockEdgeX(), SrcBlockEdgeY());
    int x,y,sx,sy;
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
    T  *dst;
@@ -592,86 +592,86 @@ void BasicEnlarger<T>::ReadSrcBlock( void ) {
 
    y=0;sy=srcEdgeY;
    // while dst outside: copy pixels of src-line 0
-   while(sy<=0 && y < blockSizeY ) {
+   while(sy<=0 && y < blockSizeY) {
       x=0;sx=srcEdgeX;
       // while dst outside: write src-edge-pixel
-      while( sx<0 && x < blockSizeX ) {
-         ReadSrcPixel( 0         , 0   , *dst );  dst++; x++; sx++;
+	  while(sx<0 && x < blockSizeX) {
+		 ReadSrcPixel(0         , 0   , *dst);  dst++; x++; sx++;
       }
       // copy pixels of src-line 0
-      while( sx < srcSizeX - 1 && x < blockSizeX ) {
-         ReadSrcPixel( sx        , 0   , *dst );  dst++; x++; sx++;
+	  while(sx < srcSizeX - 1 && x < blockSizeX) {
+		 ReadSrcPixel(sx        , 0   , *dst);  dst++; x++; sx++;
       }
       // while dst outside: write src-edge-pixel
-      while( x < blockSizeX ) {
-         ReadSrcPixel( srcSizeX-1, 0   , *dst );  dst++; x++; sx++;
+	  while(x < blockSizeX) {
+		 ReadSrcPixel(srcSizeX-1, 0   , *dst);  dst++; x++; sx++;
       }
       y++;sy++;
    }
 
-   while(sy < srcSizeY - 1 && y < blockSizeY ) {
+   while(sy < srcSizeY - 1 && y < blockSizeY) {
       x=0; sx=srcEdgeX;
       // while dst outside: write src-border-pixel
-      while( sx<0 && x < blockSizeX ) {
-         ReadSrcPixel( 0         , sy  , *dst );  dst++; x++; sx++;
+	  while(sx<0 && x < blockSizeX) {
+		 ReadSrcPixel(0         , sy  , *dst);  dst++; x++; sx++;
       }
       // copy pixels normally
-      while( sx < srcSizeX - 1 && x < blockSizeX ) {
-         ReadSrcPixel( sx        , sy  , *dst );  dst++; x++; sx++;
+	  while(sx < srcSizeX - 1 && x < blockSizeX) {
+		 ReadSrcPixel(sx        , sy  , *dst);  dst++; x++; sx++;
       }
       // while dst outside: write src-border-pixel
-      while( x < blockSizeX ) {
-         ReadSrcPixel( srcSizeX-1, sy  , *dst );  dst++; x++; sx++;
+	  while(x < blockSizeX) {
+		 ReadSrcPixel(srcSizeX-1, sy  , *dst);  dst++; x++; sx++;
       }
       y++;sy++;
    }
 
    // for outside-parts: copy pixels of last src-line
-   while( y < blockSizeY ) {
+   while(y < blockSizeY) {
       x=0;sx=srcEdgeX;
       // while dst outside: write src-edge-pixel
-      while( sx<0 && x < blockSizeX ) {
-         ReadSrcPixel( 0         , srcSizeY-1 , *dst );  dst++; x++; sx++;
+	  while(sx<0 && x < blockSizeX) {
+		 ReadSrcPixel(0         , srcSizeY-1 , *dst);  dst++; x++; sx++;
       }
       // copy pixels of last src-line
-      while( sx < srcSizeX - 1 && x < blockSizeX ) {
-         ReadSrcPixel( sx        , srcSizeY-1 , *dst );  dst++; x++; sx++;
+	  while(sx < srcSizeX - 1 && x < blockSizeX) {
+		 ReadSrcPixel(sx        , srcSizeY-1 , *dst);  dst++; x++; sx++;
       }
       // while dst outside: write src-edge-pixel
-      while( x < blockSizeX ) {
-         ReadSrcPixel( srcSizeX-1, srcSizeY-1 , *dst );  dst++; x++; sx++;
+	  while(x < blockSizeX) {
+		 ReadSrcPixel(srcSizeX-1, srcSizeY-1 , *dst);  dst++; x++; sx++;
       }
       y++;sy++;
    }
 }
 
 template<class T>
-void BasicEnlarger<T>::WriteDstBlock( void ) {
+void BasicEnlarger<T>::WriteDstBlock(void) {
    // offsetX, offsetY: new addition to allow black margins in output
    int dstBX, dstBY;
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
-   for( dstBY = DstMinBY(); dstBY < DstMaxBY(); dstBY++ ) {
-      for( dstBX = DstMinBX(); dstBX < DstMaxBX(); dstBX++ ) {
+   for(dstBY = DstMinBY(); dstBY < DstMaxBY(); dstBY++) {
+	  for(dstBX = DstMinBX(); dstBX < DstMaxBX(); dstBX++) {
          int dstCX =  dstBX + DstBlockEdgeX() - ClipX0() + offsetX;
          int dstCY =  dstBY + DstBlockEdgeY() - ClipY0() + offsetY;
-         WriteDstPixel( dstBlock->Get( dstBX, dstBY ), dstCX, dstCY );
+		 WriteDstPixel(dstBlock->Get(dstBX, dstBY), dstCX, dstCY);
       }
    }
 }
 template<class T>
-void BasicEnlarger<T>::ReadSrcLine ( int srcY, T  *srcLine ) {
-   for( int srcX=0; srcX<SizeSrcX(); srcX++ ) {
-      ReadSrcPixel( srcX , srcY, srcLine[ srcX ] );
+void BasicEnlarger<T>::ReadSrcLine (int srcY, T  *srcLine) {
+   for(int srcX=0; srcX<SizeSrcX(); srcX++) {
+	  ReadSrcPixel(srcX , srcY, srcLine[ srcX ]);
    }
 }
 
 template<class T>
-void BasicEnlarger<T>::WriteDstLine( int dstY, T  *dstLine ) {
+void BasicEnlarger<T>::WriteDstLine(int dstY, T  *dstLine) {
    // offsetX, offsetY: new addition to allow black margins in output
-   for( int dstX=ClipX0(); dstX<ClipX1(); dstX++ ) {
-      WriteDstPixel( dstLine[ dstX ], dstX-ClipX0()+offsetX, dstY-ClipY0()+offsetY );
+   for(int dstX=ClipX0(); dstX<ClipX1(); dstX++) {
+	  WriteDstPixel(dstLine[ dstX ], dstX-ClipX0()+offsetX, dstY-ClipY0()+offsetY);
    }
 }
 
@@ -679,32 +679,32 @@ template<class T>
 void BasicEnlarger<T>::BlockEnlargeSmooth(void) {
    int a, srcBY, srcBYNew, dstBX, dstBY;
    T  *line[5], *ll[5], *hl;
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
    for(a=0;a<5;a++)
       line[a] = ll[a] = new T [sizeDstBlock];
    srcBY = CurrentSrcBlockY(0);
    for(a=0;a<5;a++)
-      BlockReadLineSmooth( srcBY+a-2, line[a] );
-   for( dstBY=0;dstBY<sizeDstBlock;dstBY++) {
+	  BlockReadLineSmooth(srcBY+a-2, line[a]);
+   for(dstBY=0;dstBY<sizeDstBlock;dstBY++) {
       int dstY;
       float *kTabY;
       dstY = dstBY + dstBlockEdgeY;
-      if( dstY >= 0 && dstY < sizeYDst )
+	  if(dstY >= 0 && dstY < sizeYDst)
          kTabY = enlargeKernelY[ dstY ];
       else
          kTabY = enlargeKernelY[0];
-      srcBYNew = CurrentSrcBlockY( dstBY );
+	  srcBYNew = CurrentSrcBlockY(dstBY);
 
       // bigPos changed? -> scroll
-      if( srcBYNew > srcBY ) {
+	  if(srcBYNew > srcBY) {
          srcBY = srcBYNew;
          hl=line[0]; line[0]=line[1]; line[1]=line[2];
          line[2]=line[3]; line[3]=line[4]; line[4]=hl;
-         BlockReadLineSmooth( srcBY+2 , line[4]);
+		 BlockReadLineSmooth(srcBY+2 , line[4]);
       }
-      for( dstBX=0; dstBX < sizeDstBlock; dstBX++ ) {
+	  for(dstBX=0; dstBX < sizeDstBlock; dstBX++) {
          T      p;
          p  = line[0][dstBX]*kTabY[0];
          p += line[1][dstBX]*kTabY[1];
@@ -721,42 +721,42 @@ void BasicEnlarger<T>::BlockEnlargeSmooth(void) {
 }
 
 template<class T>
-void BasicEnlarger<T>::BlockReadLineSmooth( int srcBY, T *line ) {
+void BasicEnlarger<T>::BlockReadLineSmooth(int srcBY, T *line) {
    int srcBX, dstBX, dstX;
    for(dstBX = 0;dstBX<sizeDstBlock;dstBX++) {
       float *kTabX;
       T  p;
 
       dstX = dstBX + dstBlockEdgeX;
-      if( dstX >= 0 && dstX < sizeXDst)
+	  if(dstX >= 0 && dstX < sizeXDst)
          kTabX = enlargeKernelX[ dstX ];
       else
          kTabX = enlargeKernelX[0];
 
-      srcBX = CurrentSrcBlockX( dstBX );
-      p  = srcBlock->Get( srcBX - 2 , srcBY) * kTabX[0];
-      p += srcBlock->Get( srcBX - 1 , srcBY) * kTabX[1];
-      p += srcBlock->Get( srcBX     , srcBY) * kTabX[2];
-      p += srcBlock->Get( srcBX + 1 , srcBY) * kTabX[3];
-      p += srcBlock->Get( srcBX + 2 , srcBY) * kTabX[4];
+	  srcBX = CurrentSrcBlockX(dstBX);
+	  p  = srcBlock->Get(srcBX - 2 , srcBY) * kTabX[0];
+	  p += srcBlock->Get(srcBX - 1 , srcBY) * kTabX[1];
+	  p += srcBlock->Get(srcBX     , srcBY) * kTabX[2];
+	  p += srcBlock->Get(srcBX + 1 , srcBY) * kTabX[3];
+	  p += srcBlock->Get(srcBX + 2 , srcBY) * kTabX[4];
       line[dstBX] = p;
    }
 }
 
 template<class T>
-void BasicEnlarger<T>::AddRandom( void ) {
+void BasicEnlarger<T>::AddRandom(void) {
    int dstBX,dstBY;
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
-   for(dstBY = dstMinBY; dstBY<dstMaxBY ; dstBY++ ) {
-      for( dstBX = dstMinBX; dstBX<dstMaxBX ; dstBX++ ) {
+   for(dstBY = dstMinBY; dstBY<dstMaxBY ; dstBY++) {
+	  for(dstBX = dstMinBX; dstBX<dstMaxBX ; dstBX++) {
          float w = (2.0 * randGen->RandF() - 1.0);
          w *= randGen->RandF();
          w *= 0.5*ditherF;
          w = 1.0 + w;
 
-         dstBlock->Mul( dstBX, dstBY, w );
+		 dstBlock->Mul(dstBX, dstBY, w);
       }
    }
 }
@@ -772,12 +772,12 @@ void BasicEnlarger<T>::MaskBlockEnlargeSmooth(void) {
       line[a] = ll[a] = new float[sizeDstBlock];
    srcBY = CurrentSrcBlockY(0);
    for(a=0;a<5;a++)
-      MaskBlockReadLineSmooth( srcBY+a-2, line[a] );
-   for( dstBY=0;dstBY<sizeDstBlock;dstBY++) {
+	  MaskBlockReadLineSmooth(srcBY+a-2, line[a]);
+   for(dstBY=0;dstBY<sizeDstBlock;dstBY++) {
       int dstY;
       float *kTabY;
       dstY = dstBY + dstBlockEdgeY;
-      if( dstY >= 0 && dstY < sizeYDst )
+	  if(dstY >= 0 && dstY < sizeYDst)
          kTabY = enlargeKernelY[ dstY ];
       else {
          kTabY = enlargeKernelY[0];
@@ -785,20 +785,20 @@ void BasicEnlarger<T>::MaskBlockEnlargeSmooth(void) {
       srcBYNew = CurrentSrcBlockY(dstBY);
 
       // bigPos changed? -> scroll
-      if( srcBYNew > srcBY ) {
+	  if(srcBYNew > srcBY) {
          srcBY = srcBYNew;
          hl=line[0]; line[0]=line[1]; line[1]=line[2];
          line[2]=line[3]; line[3]=line[4]; line[4]=hl;
-         MaskBlockReadLineSmooth( srcBY+2 , line[4]);
+		 MaskBlockReadLineSmooth(srcBY+2 , line[4]);
       }
-      for( dstBX=0; dstBX < sizeDstBlock; dstBX++ ) {
+	  for(dstBX=0; dstBX < sizeDstBlock; dstBX++) {
          float p;
          p  = line[0][dstBX]*kTabY[0];
          p += line[1][dstBX]*kTabY[1];
          p += line[2][dstBX]*kTabY[2];
          p += line[3][dstBX]*kTabY[3];
          p += line[4][dstBX]*kTabY[4];
-         workMaskDst->Set( dstBX, dstBY, p );
+		 workMaskDst->Set(dstBX, dstBY, p);
       }
    }
 
@@ -807,31 +807,31 @@ void BasicEnlarger<T>::MaskBlockEnlargeSmooth(void) {
 }
 
 template<class T>
-void BasicEnlarger<T>::MaskBlockReadLineSmooth( int srcBY, float *line ) {
+void BasicEnlarger<T>::MaskBlockReadLineSmooth(int srcBY, float *line) {
    int srcBX, dstBX, dstX;
    for(dstBX = 0;dstBX<sizeDstBlock;dstBX++) {
       float *kTabX;
       float p;
 
       dstX = dstBX + dstBlockEdgeX;
-      if( dstX >= 0 && dstX < sizeXDst)
+	  if(dstX >= 0 && dstX < sizeXDst)
          kTabX = enlargeKernelX[ dstX ];
       else
          kTabX = enlargeKernelX[0];
 
-      srcBX = CurrentSrcBlockX( dstBX );
-      p  = workMask->GetF( srcBX - 2 , srcBY ) * kTabX[0];
-      p += workMask->GetF( srcBX - 1 , srcBY ) * kTabX[1];
-      p += workMask->GetF( srcBX     , srcBY ) * kTabX[2];
-      p += workMask->GetF( srcBX + 1 , srcBY ) * kTabX[3];
-      p += workMask->GetF( srcBX + 2 , srcBY ) * kTabX[4];
+	  srcBX = CurrentSrcBlockX(dstBX);
+	  p  = workMask->GetF(srcBX - 2 , srcBY) * kTabX[0];
+	  p += workMask->GetF(srcBX - 1 , srcBY) * kTabX[1];
+	  p += workMask->GetF(srcBX     , srcBY) * kTabX[2];
+	  p += workMask->GetF(srcBX + 1 , srcBY) * kTabX[3];
+	  p += workMask->GetF(srcBX + 2 , srcBY) * kTabX[4];
       line[dstBX] = p;
    }
 }
 
 
 template<class T>
-void BasicEnlarger<T>::ShrinkClip( void ) {
+void BasicEnlarger<T>::ShrinkClip(void) {
 
    T  *srcLine, *addLine, *dstLine;
    int srcY, dstX, dstY;
@@ -841,48 +841,48 @@ void BasicEnlarger<T>::ShrinkClip( void ) {
    srcLine = new T[ sizeX    + 2 ];
    addLine = new T[ sizeXDst + 2 ];
    dstLine = new T[ sizeXDst + 2 ];
-   for( dstX=0; dstX < sizeXDst; dstX++ )
+   for(dstX=0; dstX < sizeXDst; dstX++)
        dstLine[ dstX ].SetZero();
 
-   if( clipY0 > 0 ) {
-       srcY0  = int( float(clipY0-1)/scaleFaktY + 0.5);
-       floorY = float( srcY0 )*scaleFaktY;
-       dstY   = int( floorY );
-       floorY-= float( dstY );
+   if(clipY0 > 0) {
+	   srcY0  = int(float(clipY0-1)/scaleFaktY + 0.5);
+	   floorY = float(srcY0)*scaleFaktY;
+	   dstY   = int(floorY);
+	   floorY-= float(dstY);
    }
    else {
        srcY0  = 0;
        dstY   = 0;
        floorY = 0.0;
    }
-   srcY1  = int( float( clipY1+1)/scaleFaktY + 0.5 )+1;
-   if( srcY1 > sizeY )
+   srcY1  = int(float(clipY1+1)/scaleFaktY + 0.5)+1;
+   if(srcY1 > sizeY)
        srcY1 = sizeY;
 
-   for( srcY = srcY0; srcY < srcY1; srcY++ ) {
-      ReadSrcLine( srcY, srcLine );   // read srcLine,  shrink it in x-direction, resulting in addLine
-      ShrinkLineClip( srcLine, addLine );
+   for(srcY = srcY0; srcY < srcY1; srcY++) {
+	  ReadSrcLine(srcY, srcLine);   // read srcLine,  shrink it in x-direction, resulting in addLine
+	  ShrinkLineClip(srcLine, addLine);
       ff = floorY + scaleFaktY - 1.0;
       if(ff>0) {  // stepping into new dstLine reached, share addLine between old and new dstLine
-         for( dstX=clipX0; dstX<clipX1; dstX++ ) {
-            dstLine[ dstX ] += ( scaleFaktY - ff )*addLine[ dstX ];
+		 for(dstX=clipX0; dstX<clipX1; dstX++) {
+			dstLine[ dstX ] += (scaleFaktY - ff)*addLine[ dstX ];
          }
-         if( dstY >= clipY0 && dstY < clipY1 ) {
-            WriteDstLine( dstY, dstLine );
+		 if(dstY >= clipY0 && dstY < clipY1) {
+			WriteDstLine(dstY, dstLine);
          }
          floorY-=1.0;
          dstY++;
-         for( dstX=clipX0; dstX<clipX1; dstX++ ) { // clear dstLine, fill with rest of addLine
+		 for(dstX=clipX0; dstX<clipX1; dstX++) { // clear dstLine, fill with rest of addLine
             dstLine[ dstX ] = ff*addLine[ dstX ];
          }
       }
-      else  // addLine fully added to current dstLine ( with appropriate weight )
-         for( dstX=clipX0; dstX<clipX1; dstX++ )
+	  else  // addLine fully added to current dstLine (with appropriate weight)
+		 for(dstX=clipX0; dstX<clipX1; dstX++)
              dstLine[ dstX ] += scaleFaktY*addLine[ dstX ];
       floorY += scaleFaktY;
    }
-   if( dstY >= clipY0 && dstY < clipY1 ) {
-      WriteDstLine( dstY, dstLine );
+   if(dstY >= clipY0 && dstY < clipY1) {
+	  WriteDstLine(dstY, dstLine);
    }
 
    delete[] srcLine;
@@ -891,40 +891,40 @@ void BasicEnlarger<T>::ShrinkClip( void ) {
 }
 
 template<class T>
-void BasicEnlarger<T>::ShrinkLineClip( T *srcLine,  T *dstLine ) {
+void BasicEnlarger<T>::ShrinkLineClip(T *srcLine,  T *dstLine) {
    int srcX, dstX;
    int srcX0, srcX1;
    float floorX,ff;
 
    floorX = 0.0;  // left border of current smallPixel
 
-   for( dstX = clipX0; dstX<clipX1; dstX++)
+   for(dstX = clipX0; dstX<clipX1; dstX++)
       dstLine[ dstX ].SetZero();;
 
-   if( clipX0>0 ) {
-       srcX0  = int( float(clipX0-1)/scaleFaktX + 0.5 );
-       floorX = float( srcX0 )*scaleFaktX;
+   if(clipX0>0) {
+	   srcX0  = int(float(clipX0-1)/scaleFaktX + 0.5);
+	   floorX = float(srcX0)*scaleFaktX;
        dstX = int(floorX);
-       floorX -= float( dstX );
+	   floorX -= float(dstX);
    }
    else {
        srcX0 = 0;
        dstX = 0;
        floorX = 0.0;
    }
-   srcX1 = int( float( clipX1+1 )/scaleFaktX + 0.5 );
-   if( srcX1 > sizeX )
+   srcX1 = int(float(clipX1+1)/scaleFaktX + 0.5);
+   if(srcX1 > sizeX)
        srcX1 = sizeX;
 
-   for( srcX=srcX0; srcX<srcX1; srcX++ ) {
+   for(srcX=srcX0; srcX<srcX1; srcX++) {
       ff = floorX + scaleFaktX - 1.0;
       if(ff>0) {  // stepping into new dstPixel reached: share srcPixel between old and new dstPixel
-         dstLine[ dstX ] += ( scaleFaktX - ff )*srcLine[ srcX ];
+		 dstLine[ dstX ] += (scaleFaktX - ff)*srcLine[ srcX ];
          dstX++;
          floorX-=1.0;
          dstLine[ dstX ] = ff*srcLine[ srcX ];
       }
-      else // fully add srcPixel to dstPixel ( weighted )
+	  else // fully add srcPixel to dstPixel (weighted)
          dstLine[ dstX ] += scaleFaktX * srcLine[ srcX ];
       floorX += scaleFaktX;
    }
@@ -946,17 +946,17 @@ void BasicEnlarger<T>::CreateKernelsFromTab(float **kerList, int kerListLen,
    // bigPosKer:   pos of corresp. bigPixel in src
    for(smallPos=0;smallPos<kerListLen;smallPos++) {
       float *ker = kerList[smallPos];
-      for( a=0; a<5; a++) {
+	  for(a=0; a<5; a++) {
          ker[a] = 0.0;
       }
       bigPos = int(float(smallPos)*invScaleF);
-      for( k=0; k < kerTabLen; k++ ) {
+	  for(k=0; k < kerTabLen; k++) {
          int finePosKer,bigPosKer;
          // get bigPixelPos of fine-kernel pixel
          // get tabIndex by comp. to bigPos of center of kernel
          finePosKer = float((smallPos<<kerFineExp) + k - (kerTabLen>>1));
          finePosKer += (1<<kerFineExp)>>1; // add half smallPixel
-         bigPosKer = int( float(finePosKer)*invFineScaleF );
+		 bigPosKer = int(float(finePosKer)*invFineScaleF);
          tabPos = 2 + bigPosKer - bigPos;
          ker[tabPos] += kerTab[k];
       }
@@ -978,20 +978,20 @@ void BasicEnlarger<T>::CreateKernelsFromIntegralTab(float **kerList, int kerList
 
    for(smallPos=0;smallPos<kerListLen;smallPos++) {
       float *ker = kerList[smallPos];
-      for( a=0; a<5; a++) {
+	  for(a=0; a<5; a++) {
          ker[a] = 0.0;
       }
       bigPos = smallToBigTab[ smallPos + smallToBigMargin ];
       kernelStartPosFine = (smallPos<<kerFineExp) + ((1<<kerFineExp)>>1) - (kerTabLen>>1);
-      for( a=0;a<5;a++ ) {
+	  for(a=0;a<5;a++) {
          int bigPosKer,finePosKerLeft,finePosKerRight;
          bigPosKer = bigPos-2+a;
-         finePosKerLeft  = int( float(  bigPosKer    <<kerFineExp)*scaleF ) - kernelStartPosFine;
-         finePosKerRight = int( float(( bigPosKer+1 )<<kerFineExp)*scaleF ) - kernelStartPosFine;
-         if(      finePosKerLeft  <  0         ) finePosKerLeft  = 0;
-         else if( finePosKerLeft  >= kerTabLen ) finePosKerLeft  = kerTabLen-1;
-         if(      finePosKerRight <  0         ) finePosKerRight = 0;
-         else if( finePosKerRight >= kerTabLen ) finePosKerRight = kerTabLen-1;
+		 finePosKerLeft  = int(float( bigPosKer    <<kerFineExp)*scaleF) - kernelStartPosFine;
+		 finePosKerRight = int(float((bigPosKer+1)<<kerFineExp)*scaleF) - kernelStartPosFine;
+		 if(     finePosKerLeft  <  0        ) finePosKerLeft  = 0;
+		 else if(finePosKerLeft  >= kerTabLen) finePosKerLeft  = kerTabLen-1;
+		 if(     finePosKerRight <  0        ) finePosKerRight = 0;
+		 else if(finePosKerRight >= kerTabLen) finePosKerRight = kerTabLen-1;
          ker[a] = kerITab[ finePosKerRight ] - kerITab[ finePosKerLeft ];
       }
   }
@@ -1005,31 +1005,31 @@ void BasicEnlarger<T>::CreateKernels(void) {
    float *fineKernelIntegralTab;
 
    // kernels for enlarge in x-dir
-   kernelLen = 2*int( float(1<<kerFineExp) * enlargeKernelRad * scaleFaktX ) + 1;
+   kernelLen = 2*int(float(1<<kerFineExp) * enlargeKernelRad * scaleFaktX) + 1;
    fineKernelIntegralTab = CreateSmoothEnlargeKernelIntegralTab(kernelLen);
-   CreateKernelsFromIntegralTab( enlargeKernelX , sizeXDst, fineKernelIntegralTab,
-                                 kernelLen, scaleFaktX, smallToBigTabX );
+   CreateKernelsFromIntegralTab(enlargeKernelX , sizeXDst, fineKernelIntegralTab,
+								 kernelLen, scaleFaktX, smallToBigTabX);
    delete fineKernelIntegralTab;
 
    // kernels for enlarge in y-dir
-   kernelLen = 2*int( float(1<<kerFineExp) * enlargeKernelRad * scaleFaktY ) + 1;
+   kernelLen = 2*int(float(1<<kerFineExp) * enlargeKernelRad * scaleFaktY) + 1;
    fineKernelIntegralTab = CreateSmoothEnlargeKernelIntegralTab(kernelLen);
-   CreateKernelsFromIntegralTab( enlargeKernelY , sizeYDst, fineKernelIntegralTab,
-                                 kernelLen, scaleFaktY, smallToBigTabY );
+   CreateKernelsFromIntegralTab(enlargeKernelY , sizeYDst, fineKernelIntegralTab,
+								 kernelLen, scaleFaktY, smallToBigTabY);
    delete fineKernelIntegralTab;
 
    // kernels for selection in x-dir
-   kernelLen = 2*int( float(1<<kerFineExp) * selectKernelRad * scaleFaktX ) + 1;
+   kernelLen = 2*int(float(1<<kerFineExp) * selectKernelRad * scaleFaktX) + 1;
    fineKernelIntegralTab = CreateSelectKernelIntegralTab(kernelLen);
-   CreateKernelsFromIntegralTab( selectKernelX ,  sizeXDst, fineKernelIntegralTab,
-                                 kernelLen, scaleFaktX, smallToBigTabX  );
+   CreateKernelsFromIntegralTab(selectKernelX ,  sizeXDst, fineKernelIntegralTab,
+								 kernelLen, scaleFaktX, smallToBigTabX );
    delete fineKernelIntegralTab;
 
    // kernels for selection in y-dir
-   kernelLen = 2*int( float(1<<kerFineExp) * selectKernelRad * scaleFaktY ) + 1;
+   kernelLen = 2*int(float(1<<kerFineExp) * selectKernelRad * scaleFaktY) + 1;
    fineKernelIntegralTab = CreateSelectKernelIntegralTab(kernelLen);
-   CreateKernelsFromIntegralTab( selectKernelY ,  sizeYDst, fineKernelIntegralTab,
-                                 kernelLen, scaleFaktY, smallToBigTabY  );
+   CreateKernelsFromIntegralTab(selectKernelY ,  sizeYDst, fineKernelIntegralTab,
+								 kernelLen, scaleFaktY, smallToBigTabY );
    delete fineKernelIntegralTab;
 }
 
@@ -1041,7 +1041,7 @@ float * BasicEnlarger<T>::CreateSmoothEnlargeKernelTab(int len) {
 
    float *tab = new float[len];
    sum=0.0;
-   for( n=0 ; n<len; n++ ) {
+   for(n=0 ; n<len; n++) {
       x = 2.0 * float(n) / float(len-1) - 1;
       y = 2.0 - 1.0/(1+x+0.00000001) - 1.0/(1-x+0.00000001);
       y = exp(y);
@@ -1050,7 +1050,7 @@ float * BasicEnlarger<T>::CreateSmoothEnlargeKernelTab(int len) {
    }
 
    normF = 1.0/sum;
-   for( n=0; n<len; n++ ) {
+   for(n=0; n<len; n++) {
       tab[n] *= normF;
    }
    return tab;
@@ -1064,7 +1064,7 @@ float *BasicEnlarger<T>::CreateSelectKernelTab(int len) {
 
    float *tab = new float[len];
    sum=0.0;
-   for( n=0 ; n<len; n++ ) {
+   for(n=0 ; n<len; n++) {
 
       x = 2.0 * float(n) / float(len-1) - 1.0;
       y = 1.0 - x*x*x*x;
@@ -1074,7 +1074,7 @@ float *BasicEnlarger<T>::CreateSelectKernelTab(int len) {
    }
 
    normF = 1.0/sum;
-   for( n=0; n<len; n++ ) {
+   for(n=0; n<len; n++) {
       tab[n] *= normF;
    }
    return tab;
@@ -1088,7 +1088,7 @@ float *BasicEnlarger<T>::CreateSmoothEnlargeKernelIntegralTab(int len) {
 
    float *tab = new float[len];
    sum=0.0;
-   for( n=0 ; n<len; n++ ) {
+   for(n=0 ; n<len; n++) {
       x = 2.0 * float(n) / float(len-1) - 1;
       y = 2.0 - 1.0/(1+x+0.00000001) - 1.0/(1-x+0.00000001);
       y = exp(y);
@@ -1097,7 +1097,7 @@ float *BasicEnlarger<T>::CreateSmoothEnlargeKernelIntegralTab(int len) {
    }
 
    normF = 1.0/sum;
-   for( n=0; n<len; n++ ) {
+   for(n=0; n<len; n++) {
       tab[n] *= normF;
    }
    return tab;
@@ -1111,7 +1111,7 @@ float *BasicEnlarger<T>::CreateSelectKernelIntegralTab(int len) {
 
    float *tab = new float[len];
    sum=0.0;
-   for( n=0 ; n<len; n++ ) {
+   for(n=0 ; n<len; n++) {
 
       x = 2.0 * float(n) / float(len-1) - 1.0;
       y = 1.0 - x*x*x*x;
@@ -1121,7 +1121,7 @@ float *BasicEnlarger<T>::CreateSelectKernelIntegralTab(int len) {
    }
 
    normF = 1.0/sum;
-   for( n=0; n<len; n++ ) {
+   for(n=0; n<len; n++) {
       tab[n] *= normF;
    }
    return tab;
@@ -1131,10 +1131,10 @@ template<class T>
 void BasicEnlarger<T>::CreateDiffTabs(void) {
    int a;
 
-   if( OnlyShrinking() )
+   if(OnlyShrinking())
       return;
 
-   for( a=0; a<diffTabLen; a++ ) {
+   for(a=0; a<diffTabLen; a++) {
       float w,w0 = float(a)/float(diffTabLen);
       //
       // 1. SelectWeights
@@ -1158,9 +1158,9 @@ void BasicEnlarger<T>::CreateDiffTabs(void) {
 }
 
 
- // for a BigPixel ( srcBX, srcBY ) read surrounding 5x5
+ // for a BigPixel (srcBX, srcBY) read surrounding 5x5
 template<class T>
-void BasicEnlarger<T>::ReadBigPixelNeighs( int srcBX, int srcBY ) {
+void BasicEnlarger<T>::ReadBigPixelNeighs(int srcBX, int srcBY) {
    int x,y,xx,yy,pos;
    for(y=0;y<5;y++) {
       for(x=0;x<5;x++) {
@@ -1185,10 +1185,10 @@ void BasicEnlarger<T>::ReadBigPixelNeighs( int srcBX, int srcBY ) {
          bigPixelCenterW[pos] = ff;  // increased weight near pixel-center
 
          // for FractNoise: select random center of deform kernel within fractTab
-         if( fractTab!=0 && fractNoiseF!=0.0 ) {
+		 if(fractTab!=0 && fractNoiseF!=0.0) {
             bigPixelFractCX [ pos ] = xx ;
             bigPixelFractCY [ pos ] = yy;
-            fractTab->GetKerCenter( bigPixelFractCX [ pos ], bigPixelFractCY [ pos ], bigPixelFractCVal [ pos ] );
+			fractTab->GetKerCenter(bigPixelFractCX [ pos ], bigPixelFractCY [ pos ], bigPixelFractCVal [ pos ]);
          }
       }
    }
@@ -1200,20 +1200,20 @@ void BasicEnlarger<T>::ReadDerivatives(void)   {
 
    for(y=1;y<sizeSrcBlockY-1;y++) {
       for(x=1;x<sizeSrcBlockX-1;x++) {
-         T      s00 = srcBlock->Get( x-1, y-1 );
-         T      s10 = srcBlock->Get( x  , y-1 );
-         T      s20 = srcBlock->Get( x+1, y-1 );
-         T      s01 = srcBlock->Get( x-1, y   );
-         T      s11 = srcBlock->Get( x  , y   );
-         T      s21 = srcBlock->Get( x+1, y   );
-         T      s02 = srcBlock->Get( x-1, y+1 );
-         T      s12 = srcBlock->Get( x  , y+1 );
-         T      s22 = srcBlock->Get( x+1, y+1 );
+		 T      s00 = srcBlock->Get(x-1, y-1);
+		 T      s10 = srcBlock->Get(x  , y-1);
+		 T      s20 = srcBlock->Get(x+1, y-1);
+		 T      s01 = srcBlock->Get(x-1, y  );
+		 T      s11 = srcBlock->Get(x  , y  );
+		 T      s21 = srcBlock->Get(x+1, y  );
+		 T      s02 = srcBlock->Get(x-1, y+1);
+		 T      s12 = srcBlock->Get(x  , y+1);
+		 T      s22 = srcBlock->Get(x+1, y+1);
 
          T      dx,dy,d2x,d2y,dxy, d2;
 
-         dx  = 0.5*( s21 - s01 );//0.25.. + 0.125*( s22 - s02 + s20 - s00 );
-         dy  = 0.5*( s12 - s10 );//0.25.. + 0.125*( s22 - s20 + s02 - s00 );
+		 dx  = 0.5*(s21 - s01);//0.25.. + 0.125*(s22 - s02 + s20 - s00);
+		 dy  = 0.5*(s12 - s10);//0.25.. + 0.125*(s22 - s20 + s02 - s00);
 
          d2x =  s21 + s01 - 2.0*s11 ;
 
@@ -1226,7 +1226,7 @@ void BasicEnlarger<T>::ReadDerivatives(void)   {
          dXY->Set(x,y,dxy);
 
          d2  =   s00 + s02 + s20 + s22;
-         d2 += ( s10 + s12 + s01 + s21 )*2.0  ;
+		 d2 += (s10 + s12 + s01 + s21)*2.0  ;
          d2 = s11 - (1.0/12.0)*d2;
          d2L->Set(x,y,d2);
       }
@@ -1294,7 +1294,7 @@ void BasicEnlarger<T>::CalcBaseWeights(void)   {
          if(dd<0.0) dd=0.0; else if(dd>1.0) dd=1.0;
          dd += 0.0001;
 
-         dWork = (20.0*gradNorm )*(intensityFakt + 0.9);
+		 dWork = (20.0*gradNorm)*(intensityFakt + 0.9);
          dWork *= dWork;
          dWork -= 0.7;
          if(dWork < 0.0) dWork=0.0; else if(dWork>1.0) dWork=1.0;
@@ -1317,11 +1317,11 @@ void BasicEnlarger<T>::CalcBaseWeights(void)   {
          laplaceNorm = d2L->Get(x,y).Norm1();
          float v = bW.GetF(x,y);
 
-         dd =  ModVal2( v - bW.GetF(x-1,y-1), v - bW.GetF(x+1,y+1) );
-         dd += ModVal2( v - bW.GetF(x-1,y+1), v - bW.GetF(x+1,y-1) );
+		 dd =  ModVal2(v - bW.GetF(x-1,y-1), v - bW.GetF(x+1,y+1));
+		 dd += ModVal2(v - bW.GetF(x-1,y+1), v - bW.GetF(x+1,y-1));
          dd *= 0.5;
-         dd += ModVal2( v - bW.GetF(x  ,y+1), v - bW.GetF(x  ,y-1) );
-         dd += ModVal2( v - bW.GetF(x-1,y  ), v - bW.GetF(x+1,y  ) );
+		 dd += ModVal2(v - bW.GetF(x  ,y+1), v - bW.GetF(x  ,y-1));
+		 dd += ModVal2(v - bW.GetF(x-1,y ), v - bW.GetF(x+1,y ));
          dd*=(1.0/3.0);
 
          dd = v - lineNegF*dd;  //0.8
@@ -1334,7 +1334,7 @@ void BasicEnlarger<T>::CalcBaseWeights(void)   {
 
          cc = 1.0 - 12.0*gradNorm*intensityFakt;
          if(cc<0.0) cc=0.0; else if(cc>1.0) dd=1.0;
-         cc = 10.0*laplaceNorm*intensityFakt*( 0.4 + cc );
+		 cc = 10.0*laplaceNorm*intensityFakt*(0.4 + cc);
          if(cc>1.0)cc=1.0;
          cc = pow_f(cc,2.0);
          dd+= linePosF*cc;

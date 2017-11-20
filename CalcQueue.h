@@ -50,14 +50,14 @@ private:
    QStringList jobList;
 
 public:
-   JobListModel( void ) : QAbstractListModel() {}
-   void setJobList( const QStringList & list );
-   int rowCount( const QModelIndex & parent = QModelIndex() ) const { return jobList.size(); }
-   QVariant data( const QModelIndex & index, int role ) const;
-   Qt::ItemFlags flags( const QModelIndex & index ) const;
-   bool setData( const QModelIndex & index, const QVariant &value, int role = Qt::EditRole );
-   bool insertRows( int position, int rows, const QModelIndex & parent = QModelIndex() );
-   bool removeRows( int position, int rows, const QModelIndex & parent = QModelIndex() );
+   JobListModel(void) : QAbstractListModel() {}
+   void setJobList(const QStringList & list);
+   int rowCount(const QModelIndex & parent = QModelIndex()) const { return jobList.size(); }
+   QVariant data(const QModelIndex & index, int role) const;
+   Qt::ItemFlags flags(const QModelIndex & index) const;
+   bool setData(const QModelIndex & index, const QVariant &value, int role = Qt::EditRole);
+   bool insertRows(int position, int rows, const QModelIndex & parent = QModelIndex());
+   bool removeRows(int position, int rows, const QModelIndex & parent = QModelIndex());
 };
 
 class CalcJob :public QObject {
@@ -70,45 +70,45 @@ private:
    int posInQueue;
    bool removeAtEnd;            // for child jobs of dir-calc
 public:
-   CalcJob( void ) : status( notStarted ), activity( null ), error( none ), posInQueue( -1 ), removeAtEnd( false ) { }
-   virtual void SetActivity( CalcJobActivity act ) { activity = act; }
-   virtual QString StatusString( void ) { return ""; }
-   virtual QString DetailedStatusString( void ) { return ""; }
-   virtual QString DstPath( void )    { return ""; }
-   virtual QString Name( void )       { return "< none >"; }
-   virtual QString InfoString( void ) { return ""; }
+   CalcJob(void) : status(notStarted), activity(null), error(none), posInQueue(-1), removeAtEnd(false) { }
+   virtual void SetActivity(CalcJobActivity act) { activity = act; }
+   virtual QString StatusString(void) { return ""; }
+   virtual QString DetailedStatusString(void) { return ""; }
+   virtual QString DstPath(void)    { return ""; }
+   virtual QString Name(void)       { return "< none >"; }
+   virtual QString InfoString(void) { return ""; }
 
    // unfinished and total count
    // for single-calc jobs 0 or 1,
    // necessary for dir-calc jobs
-   virtual int Unfinished( void ) { return 1; }
-   virtual int Total( void )      { return 1; }
-   virtual float   Progress( void ) { return 0.0; }
-   virtual int ThreadsUsed( void )  { return 1; }
+   virtual int Unfinished(void) { return 1; }
+   virtual int Total(void)      { return 1; }
+   virtual float   Progress(void) { return 0.0; }
+   virtual int ThreadsUsed(void)  { return 1; }
 
-   CalcJobStatus Status( void ) { return status; }
-   CalcJobError  Error ( void ) { return error; }
-   bool Ended( void )  { return status == failed || status == success; }
-   CalcJobActivity Activity( void ) { return activity; }
-   int Position( void ) { return posInQueue; }
-   void SetQueue( CalcQueue *q ) { myQueue = q; }
-   void SetPosition( int p ) { posInQueue = p; }
-   void Update( void ) { emit StatusChanged( this ); }
-   bool IsInQueue( void ) { return myQueue!=0; }
-   CalcQueue *Queue( void ) { return myQueue; }
+   CalcJobStatus Status(void) { return status; }
+   CalcJobError  Error (void) { return error; }
+   bool Ended(void)  { return status == failed || status == success; }
+   CalcJobActivity Activity(void) { return activity; }
+   int Position(void) { return posInQueue; }
+   void SetQueue(CalcQueue *q) { myQueue = q; }
+   void SetPosition(int p) { posInQueue = p; }
+   void Update(void) { emit StatusChanged(this); }
+   bool IsInQueue(void) { return myQueue!=0; }
+   CalcQueue *Queue(void) { return myQueue; }
 
-   void SetRemoveAtEnd( bool r ) { removeAtEnd = r; }
-   bool RemoveAtEnd( void ) { return removeAtEnd; }
+   void SetRemoveAtEnd(bool r) { removeAtEnd = r; }
+   bool RemoveAtEnd(void) { return removeAtEnd; }
 
 protected:
-   void SetStatus( CalcJobStatus s ) { status = s; emit StatusChanged( this ); }
-   void SetError ( CalcJobError e )  { error = e; }
+   void SetStatus(CalcJobStatus s) { status = s; emit StatusChanged(this); }
+   void SetError (CalcJobError e)  { error = e; }
 
 signals:
-   void StatusChanged( CalcJob *myPtr );
-   void StatusMessage( const QString & message );
-   void ErrorMessage( const QString & message );
-   void EndReached( void );
+   void StatusChanged(CalcJob *myPtr);
+   void StatusMessage(const QString & message);
+   void ErrorMessage(const QString & message);
+   void EndReached(void);
 
 private slots:
 private:
@@ -135,35 +135,35 @@ private:
    EnlargerThread *myThread;
 
 public:
-   SingleCalcJob( FormatterClass *formatter );
-   SingleCalcJob( FormatterClass *formatter, bool useClipping );
-   ~SingleCalcJob( void );
-   void AttachImage( const QImage & srcI );
-   void SetActivity( CalcJobActivity  act );
-   QString StatusString( void );
-   QString DetailedStatusString( void );
-   QString InfoString( void );
-   QString DstPath( void )  { return dstPath; }
-   QString Name( void )     { return dstName; }
+   SingleCalcJob(FormatterClass *formatter);
+   SingleCalcJob(FormatterClass *formatter, bool useClipping);
+   ~SingleCalcJob(void);
+   void AttachImage(const QImage & srcI);
+   void SetActivity(CalcJobActivity  act);
+   QString StatusString(void);
+   QString DetailedStatusString(void);
+   QString InfoString(void);
+   QString DstPath(void)  { return dstPath; }
+   QString Name(void)     { return dstName; }
 
-   int Unfinished( void ) { if( !Ended() ) return 1; return 0; }
-   int Total( void )      { if( Ended() && RemoveAtEnd() ) return 0; return 1; }
-   int ThreadsUsed( void )  { return 1; }
-   float   Progress( void ) { return float( progress )*0.01; }
+   int Unfinished(void) { if(!Ended()) return 1; return 0; }
+   int Total(void)      { if(Ended() && RemoveAtEnd()) return 0; return 1; }
+   int ThreadsUsed(void)  { return 1; }
+   float   Progress(void) { return float(progress)*0.01; }
 
 signals:
-   void BadAlloc( const QString & dstName );
+   void BadAlloc(const QString & dstName);
 
 private slots:
-   void slot_getProgress( int p ) { progress = p; emit StatusChanged( this ); }
-   void slot_badAlloc( void );
-   void slot_imageNotSaved( void );
-   void slot_imageSaved( int w, int h );
+   void slot_getProgress(int p) { progress = p; emit StatusChanged(this); }
+   void slot_badAlloc(void);
+   void slot_imageNotSaved(void);
+   void slot_imageSaved(int w, int h);
 
 private:
-   void StartEnlarge( void ); // create thread, give parameters, start enlarging
-   void EndEnlarge( void ); //   delete thread
-   void CalculateFormat( const QImage & srcImg, EnlargeFormat & format );
+   void StartEnlarge(void); // create thread, give parameters, start enlarging
+   void EndEnlarge(void); //   delete thread
+   void CalculateFormat(const QImage & srcImg, EnlargeFormat & format);
 };
 
 class DirCalcJob : public CalcJob {
@@ -184,36 +184,36 @@ private:
 
    QDir srcDir, dstDir;
    QStringList entries;
-   int maxActive;            // maximum of child jobs ( depends on activity )
+   int maxActive;            // maximum of child jobs (depends on activity)
    int numActive;
    int numTotal, numFinished, numError;
    bool manageJobsRecursionBlock;
 
 public:
-   DirCalcJob( FormatterClass *formatter, const QString & sPath,  const QString & dPath );
-   ~DirCalcJob( void );
-   void SetActivity( CalcJobActivity  act );
-   QString StatusString( void );
-   QString DetailedStatusString( void );
-   QString InfoString( void );
-   QString DstPath( void )  { return dstPath; }
-   QString Name( void )     { return dstName; }
-   float   Progress( void ) { return 0.0; }   // no progress in this job, active jobs are put out into queue
-   int Unfinished( void )   { return entries.size(); }
-   int Total( void )        { return entries.size() + numFinished; }
-   int ThreadsUsed( void )  { return 0; }     // no calculations within this job, calcjobs external
+   DirCalcJob(FormatterClass *formatter, const QString & sPath,  const QString & dPath);
+   ~DirCalcJob(void);
+   void SetActivity(CalcJobActivity  act);
+   QString StatusString(void);
+   QString DetailedStatusString(void);
+   QString InfoString(void);
+   QString DstPath(void)  { return dstPath; }
+   QString Name(void)     { return dstName; }
+   float   Progress(void) { return 0.0; }   // no progress in this job, active jobs are put out into queue
+   int Unfinished(void)   { return entries.size(); }
+   int Total(void)        { return entries.size() + numFinished; }
+   int ThreadsUsed(void)  { return 0; }     // no calculations within this job, calcjobs external
 
 signals:
-   void BadAlloc( const QString & dstName );
+   void BadAlloc(const QString & dstName);
 
 private slots:
-   void GetChildStatusMessage( const QString & message ) { emit StatusMessage( "   " + message ); }
-   void GetChildErrorMessage( const QString & message )  { emit ErrorMessage ( "   " + message ); numError++; }
-   void ChildJobEnded( void );
+   void GetChildStatusMessage(const QString & message) { emit StatusMessage("   " + message); }
+   void GetChildErrorMessage(const QString & message)  { emit ErrorMessage ("   " + message); numError++; }
+   void ChildJobEnded(void);
 
 private:
-   void ManageJobs( void );  // push new jobs if possible, check if end reached
-   void NewChildJob( void ); // create child job from an entry, put it into the queue
+   void ManageJobs(void);  // push new jobs if possible, check if end reached
+   void NewChildJob(void); // create child job from an entry, put it into the queue
 };
 
 
@@ -227,32 +227,32 @@ private:
    QTimer *updateTimer;                    // for  clean-up and printing
 
 public:
-   CalcQueue( void );
-   ~CalcQueue( void );
-   void AddJob( CalcJob *newJob );
-   JobListModel *DisplayModel( void ) { return &queueDisplayModel; }
-   bool IsInQueue( const QString & dstPath );
-   int UnfinishedJobs( void ) { return unfinishedCount; }
-   void Clear( void );
-   void RemoveEnded( void );
-   void RemoveJob( QModelIndex jobIdx );
-   void ResetProgress(void ) { finishedCount = 0; }
+   CalcQueue(void);
+   ~CalcQueue(void);
+   void AddJob(CalcJob *newJob);
+   JobListModel *DisplayModel(void) { return &queueDisplayModel; }
+   bool IsInQueue(const QString & dstPath);
+   int UnfinishedJobs(void) { return unfinishedCount; }
+   void Clear(void);
+   void RemoveEnded(void);
+   void RemoveJob(QModelIndex jobIdx);
+   void ResetProgress(void) { finishedCount = 0; }
 
 signals:
-   void tellProgress( int p );
-   void tellJobCount( int endedJobs, int totalJobs );
+   void tellProgress(int p);
+   void tellJobCount(int endedJobs, int totalJobs);
 
 private slots:
-   void slot_JobStatusChanged( CalcJob *job );
-   void slot_TimerUpdate( void ) { SearchRemoveAtEnd(); PrintAll(); }
+   void slot_JobStatusChanged(CalcJob *job);
+   void slot_TimerUpdate(void) { SearchRemoveAtEnd(); PrintAll(); }
 
 private:
-   void RemoveJob( CalcJob *job );
-   void UpdateQueue( void );    // queue changed: update job positions&activity, rebuild the queueDisplayModel
-   void UpdateProgress( void );
-   void PrintJob( CalcJob *job );
-   void PrintAll( void );
-   void SearchRemoveAtEnd( void );  // some jobs ( childs of dir-calc ) want to be removed at end
+   void RemoveJob(CalcJob *job);
+   void UpdateQueue(void);    // queue changed: update job positions&activity, rebuild the queueDisplayModel
+   void UpdateProgress(void);
+   void PrintJob(CalcJob *job);
+   void PrintAll(void);
+   void SearchRemoveAtEnd(void);  // some jobs (childs of dir-calc) want to be removed at end
 };
 
 #endif // CALCQUEUE_H

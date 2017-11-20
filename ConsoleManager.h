@@ -66,6 +66,8 @@ public slots:
 	void imageNotSaved() {
 		cout << " \n[ ERROR ] - Could not save image '" << dstName.toStdString()<<"'.\n"<<flush; ended=true;  }
 	void imageSaved(int w, int h) {
+		Q_UNUSED(w);
+		Q_UNUSED(h);
 		cout << " OK.\n" << flush;
 		ended=true;
 	}
@@ -96,14 +98,14 @@ class ConsoleManager : public QObject {
    QString dstName;
 
 public:
-   ConsoleManager( int argc, char *argv[] );
-   ~ConsoleManager( void ) {}
-   bool UseGUI( void );
-   void SetupEnlargerDialog ( EnlargerDialog & theDialog );
-   bool StartConsoleEnlarge  ( EnlargerThread & myThread );
-   bool TryOpenSource( QString filename, QImage & srcImage );
-   void IncDestName( QString & dstName ,  const QString & dstDirPath  );
-   void PrintHelp( void );
+   ConsoleManager(int argc, char *argv[]);
+   ~ConsoleManager(void) {}
+   bool UseGUI(void);
+   void SetupEnlargerDialog (EnlargerDialog & theDialog);
+   bool StartConsoleEnlarge  (EnlargerThread & myThread);
+   bool TryOpenSource(QString filename, QImage & srcImage);
+   void IncDestName(QString & dstName ,  const QString & dstDirPath );
+   void PrintHelp(void);
 
 };
 

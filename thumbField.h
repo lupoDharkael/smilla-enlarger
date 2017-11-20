@@ -32,7 +32,7 @@ class QImage;
 
 class ThumbField : public QWidget {
     Q_OBJECT
-    Q_PROPERTY( QImage theImage READ theImage WRITE setTheImage)
+    Q_PROPERTY(QImage theImage READ theImage WRITE setTheImage)
 
 private:
     QImage myImage;
@@ -55,37 +55,37 @@ private:
     QImage screenImage;
 
 public:
-    ThumbField( QWidget *parent=0 );
-    ~ThumbField( void );
+    ThumbField(QWidget *parent=0);
+    ~ThumbField(void);
 
-    void setTheImage( const QImage & newImage );
-    void setFormat( const EnlargeFormat & format );
-    QImage theImage( void ) const { return myImage; }
-    void ShowCross( void ) { selectCrossVisible = true; update(); }
-    void HideCross( void ) { selectCrossVisible = false; update(); }
+    void setTheImage(const QImage & newImage);
+    void setFormat(const EnlargeFormat & format);
+    QImage theImage(void) const { return myImage; }
+    void ShowCross(void) { selectCrossVisible = true; update(); }
+    void HideCross(void) { selectCrossVisible = false; update(); }
 
 signals:
-    void selectionChanged( float x, float y );
+    void selectionChanged(float x, float y);
 
 public slots:
-    void Update( void ) { update(); }
-    void moveSelection( float x, float y );
+    void Update(void) { update(); }
+    void moveSelection(float x, float y);
 
 protected:
-    void mousePressEvent( QMouseEvent *event );
-    void mouseMoveEvent( QMouseEvent *event );
-    void mouseReleaseEvent( QMouseEvent *event );
-    void paintEvent( QPaintEvent *event );
-    void resizeEvent ( QResizeEvent * event );
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void resizeEvent (QResizeEvent * event);
 
 private:
-    void SimpleAdjust( void );          // adjust view if clip-rect has moved outside
-    void AdjustViewAroundClip( void );  // center view around clip-rect
-    void UpdateSizeAndZoom( void );     // for myImage calculate zoom,size to fit into MAX-W,H
-    void UpdateScreenImage( void );     // for changed souce or clipping: redraw screenImage
-    void CorrectSelect( void );
-    void CenterSelect( void ) {
-       moveSelection( 0.5*(baseClipX0 + baseClipX1), 0.5*(baseClipY0 + baseClipY1) );
+    void SimpleAdjust(void);          // adjust view if clip-rect has moved outside
+    void AdjustViewAroundClip(void);  // center view around clip-rect
+    void UpdateSizeAndZoom(void);     // for myImage calculate zoom,size to fit into MAX-W,H
+    void UpdateScreenImage(void);     // for changed souce or clipping: redraw screenImage
+    void CorrectSelect(void);
+    void CenterSelect(void) {
+       moveSelection(0.5*(baseClipX0 + baseClipX1), 0.5*(baseClipY0 + baseClipY1));
     }
 };
 

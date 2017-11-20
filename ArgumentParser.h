@@ -35,12 +35,12 @@ class ArgumentParser {
    int optionsFound;
 
 public:
-   ArgumentParser( void );
-   ~ArgumentParser( void );
-   void AddOption( BasicOption *newOption );
-   bool Parse( int argc, char *argv[] );  // return false -> error
-   QStringList NonOptionArguments( void ) { return otherArgs; }
-   bool OptionsFound( void ) { return optionsFound; }
+   ArgumentParser(void);
+   ~ArgumentParser(void);
+   void AddOption(BasicOption *newOption);
+   bool Parse(int argc, char *argv[]);  // return false -> error
+   QStringList NonOptionArguments(void) { return otherArgs; }
+   bool OptionsFound(void) { return optionsFound; }
 
 private:
 
@@ -54,19 +54,19 @@ class BasicOption {
    bool optFound;
 
 public:
-   BasicOption( void ) : myParser(0), optFound(false) {}
-   virtual ~BasicOption( void ) {}
-   bool Found( void ) { return optFound; }
-   bool IsThere( void ) { return optFound; }
-   void AddOptString( QString str );
-   void Set(  ArgumentParser *theParser, const QString & optStr, const QString & optStr2 = "" );
+   BasicOption(void) : myParser(0), optFound(false) {}
+   virtual ~BasicOption(void) {}
+   bool Found(void) { return optFound; }
+   bool IsThere(void) { return optFound; }
+   void AddOptString(QString str);
+   void Set( ArgumentParser *theParser, const QString & optStr, const QString & optStr2 = "");
 
 protected:
    // optArg: "-option" nextArg: param of opt? use if needed, "", if none there
-   virtual bool Parse( const QString & optArg, const QString & nextArg, bool & error );
-   virtual bool HasParameter( void ) { return false; }
-   QStringList OptStrings( void ) { return optStrings; }
-   void SetFound( bool f ) { optFound = f; }
+   virtual bool Parse(const QString & optArg, const QString & nextArg, bool & error);
+   virtual bool HasParameter(void) { return false; }
+   QStringList OptStrings(void) { return optStrings; }
+   void SetFound(bool f) { optFound = f; }
 
 };
 
@@ -76,31 +76,31 @@ class IntegerOption : public BasicOption {
    int minVal, maxVal;
 
 public:
-   IntegerOption( void ) : BasicOption() {}
-   void Set( ArgumentParser *theParser, const QString & optStr, const QString & optStr2 = "", int defaultVal=0 );
-   int Value( void ) { return value; }
-   void SetRange( int min, int max ) { minVal=min; maxVal=max; hasRange=true; }
-   void SetDefault( int defaultV ) { value = defaultV; }
+   IntegerOption(void) : BasicOption() {}
+   void Set(ArgumentParser *theParser, const QString & optStr, const QString & optStr2 = "", int defaultVal=0);
+   int Value(void) { return value; }
+   void SetRange(int min, int max) { minVal=min; maxVal=max; hasRange=true; }
+   void SetDefault(int defaultV) { value = defaultV; }
 
 protected:
-   bool Parse( const QString & optArg, const QString & nextArg, bool & error );
-   bool HasParameter( void ) { return true; }
+   bool Parse(const QString & optArg, const QString & nextArg, bool & error);
+   bool HasParameter(void) { return true; }
 };
 
 class StringOption : public BasicOption {
    QString value;
 
 public:
-   StringOption( void ) : BasicOption() {}
-   ~StringOption( void ) {}
-   void Set( ArgumentParser *theParser, const QString & optStr, const QString & optStr2 = "" )
-      { BasicOption::Set( theParser, optStr, optStr2 ); }
-   QString Value( void ) { return value; }
-   void SetDefault( const QString & defaultV ) { value = defaultV; }
+   StringOption(void) : BasicOption() {}
+   ~StringOption(void) {}
+   void Set(ArgumentParser *theParser, const QString & optStr, const QString & optStr2 = "")
+	  { BasicOption::Set(theParser, optStr, optStr2); }
+   QString Value(void) { return value; }
+   void SetDefault(const QString & defaultV) { value = defaultV; }
 
 protected:
-   bool Parse( const QString & optArg, const QString & nextArg, bool & error );
-   bool HasParameter( void ) { return true; }
+   bool Parse(const QString & optArg, const QString & nextArg, bool & error);
+   bool HasParameter(void) { return true; }
 };
 
 #endif // ARGUMENTPARSER_H

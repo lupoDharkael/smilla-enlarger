@@ -41,7 +41,7 @@ const int srcBlockMargin = 9;        // srcBlock contains additional margins of 
 const float similPeakThinness   = 8.0 ;      // sharper peak at 0.0 -> others are less similar
 const float similPeakFlatness   = 1.5 ;      //
 const float similWeightFakt     = 0.09;     // 0.09
-const float similPeakFakt       = 0.7 ;      // fakt*peak + ( 1 - fakt )*linear
+const float similPeakFakt       = 0.7 ;      // fakt*peak + (1 - fakt)*linear
 		                                       //
 const float indieWeightFact     = 1.0 ;      // modifies weight of indies
 const float indieSensitivity    = 7.0 ;      // higher value -> individuality at smaller distance

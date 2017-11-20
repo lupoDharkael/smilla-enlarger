@@ -46,10 +46,10 @@ public:
    float edgeX, edgeY;
 
 public:
-   float SrcX( int screenX ) const { return float(screenX)/scaleX  + edgeX; }
-   float SrcY( int screenY ) const { return float(screenY)/scaleY  + edgeY; }
-   int ScreenX( float x ) const { return int( ( x - edgeX )*scaleX ); }
-   int ScreenY( float y ) const { return int( ( y - edgeY )*scaleY ); }
+   float SrcX(int screenX) const { return float(screenX)/scaleX  + edgeX; }
+   float SrcY(int screenY) const { return float(screenY)/scaleY  + edgeY; }
+   int ScreenX(float x) const { return int((x - edgeX)*scaleX); }
+   int ScreenY(float y) const { return int((y - edgeY)*scaleY); }
 };
 
 class CropSelectRect {
@@ -64,37 +64,37 @@ class CropSelectRect {
    PosInRect dragModeX;
    PosInRect dragModeY;
 public:
-   CropSelectRect( int w, int h );
-   ~CropSelectRect( void ) {}
-   void DrawClipRect( QPainter & painter,  const STransform & sTrans );
-   void SetFormat( float f ) { srcFormatRatio = f; AdjustClipFormat(); }
-   bool IsOpen( void ) { return isOpen; }
-   bool IsDragged( void ) { return isDragged; }
-   void CheckPosition( int x, int y, const STransform & sTrans, PosInRect & posX, PosInRect & posY );
-   void DragStart( float x, float y, PosInRect modeX, PosInRect modeY,  const STransform & sTrans );
-   void DragMove ( float x, float y );
-   void DragEnd( void ) { isDragged = false; }
+   CropSelectRect(int w, int h);
+   ~CropSelectRect(void) {}
+   void DrawClipRect(QPainter & painter,  const STransform & sTrans);
+   void SetFormat(float f) { srcFormatRatio = f; AdjustClipFormat(); }
+   bool IsOpen(void) { return isOpen; }
+   bool IsDragged(void) { return isDragged; }
+   void CheckPosition(int x, int y, const STransform & sTrans, PosInRect & posX, PosInRect & posY);
+   void DragStart(float x, float y, PosInRect modeX, PosInRect modeY,  const STransform & sTrans);
+   void DragMove (float x, float y);
+   void DragEnd(void) { isDragged = false; }
 
-   void OpenClip( float x0, float y0, float x1, float y1 );
-   void CloseClip( void )   { isOpen = false; }
-   void GetMarkedClipRect( float & cx0, float & cy0, float & cx1, float & cy1 ) {
-      if( IsOpen() && ClipW() > 0.0 && ClipH() > 0.0 ) {
+   void OpenClip(float x0, float y0, float x1, float y1);
+   void CloseClip(void)   { isOpen = false; }
+   void GetMarkedClipRect(float & cx0, float & cy0, float & cx1, float & cy1) {
+	  if(IsOpen() && ClipW() > 0.0 && ClipH() > 0.0) {
          cx0 = clipX0; cy0 = clipY0; cx1 = clipX1; cy1 = clipY1;
       }
       else {
          cx0 = cy0 = 0.0; cx1 = srcWidth; cy1 = srcHeight;
       }
    }
-   void SetSrc( int w, int h );
-   float ClipW( void ) { return clipX1 - clipX0; }
-   float ClipH( void ) { return clipY1 - clipY0; }
+   void SetSrc(int w, int h);
+   float ClipW(void) { return clipX1 - clipX0; }
+   float ClipH(void) { return clipY1 - clipY0; }
 
 private:
-   void CorrectClip( void );
-   void AdjustClipFormat( void );
-   void AdjustClipFormatX( void );
-   void AdjustClipFormatY( void );
-   void AdjustClipFormatXY( PosInRect modeX, PosInRect modeY );
+   void CorrectClip(void);
+   void AdjustClipFormat(void);
+   void AdjustClipFormatX(void);
+   void AdjustClipFormatY(void);
+   void AdjustClipFormatXY(PosInRect modeX, PosInRect modeY);
 };
 
 #endif // CLIPRECT_H

@@ -47,24 +47,24 @@ class ThColorEnlarger : public BasicEnlarger<Point> {
 
 
 public:
-   ThColorEnlarger(  const QImage & srcI, const EnlargeFormat & format, const EnlargeParameter & param, EnlargerThread *thread )
-      :  BasicEnlarger<Point> ( format, param ), myThread( thread )
+   ThColorEnlarger( const QImage & srcI, const EnlargeFormat & format, const EnlargeParameter & param, EnlargerThread *thread)
+	  :  BasicEnlarger<Point> (format, param), myThread(thread)
    {
       srcImg = srcI;
    }
 
    // Enlarge can be stopped by thread, gives progress to thread
-   bool Enlarge( QImage *dstI );
+   bool Enlarge(QImage *dstI);
 
    // those have to be implemented for communication between real src/dst and BasicEnlarger
-   void ReadSrcPixel( int srcX, int srcY, Point & dstP );
-   void WriteDstPixel( Point p, int dstCX, int dstCY );
-   void AddRandomNew( void );
+   void ReadSrcPixel(int srcX, int srcY, Point & dstP);
+   void WriteDstPixel(Point p, int dstCX, int dstCY);
+   void AddRandomNew(void);
    void FractModify(void);
-   void ColorToPoint( QRgb c, Point & p ) {
-      p.x = float( qRed  ( c ) )*(1.0/255.0);
-      p.y = float( qGreen( c ) )*(1.0/255.0);
-      p.z = float( qBlue ( c ) )*(1.0/255.0);
+   void ColorToPoint(QRgb c, Point & p) {
+	  p.x = float(qRed  (c))*(1.0/255.0);
+	  p.y = float(qGreen(c))*(1.0/255.0);
+	  p.z = float(qBlue (c))*(1.0/255.0);
    }
 };
 
@@ -78,25 +78,25 @@ class ThColorEnlargerAlpha : public BasicEnlarger<Point4> {
 
 
 public:
-   ThColorEnlargerAlpha(  const QImage & srcI, const EnlargeFormat & format, const EnlargeParameter & param, EnlargerThread *thread )
-      :  BasicEnlarger<Point4> ( format, param ), myThread( thread )
+   ThColorEnlargerAlpha( const QImage & srcI, const EnlargeFormat & format, const EnlargeParameter & param, EnlargerThread *thread)
+	  :  BasicEnlarger<Point4> (format, param), myThread(thread)
    {
       srcImg = srcI;
    }
 
    // Enlarge can be stopped by thread, gives progress to thread
-   bool Enlarge( QImage *dstI );
+   bool Enlarge(QImage *dstI);
 
    // those have to be implemented for communication between real src/dst and BasicEnlarger
-   void ReadSrcPixel( int srcX, int srcY, Point4 & dstP );
-   void WriteDstPixel( Point4 p, int dstCX, int dstCY );
-   void AddRandomNew( void );
+   void ReadSrcPixel(int srcX, int srcY, Point4 & dstP);
+   void WriteDstPixel(Point4 p, int dstCX, int dstCY);
+   void AddRandomNew(void);
    void FractModify(void);
-   void ColorToPoint( QRgb c, Point4 & p ) {
-      p.x = float( qRed  ( c ) )*(1.0/255.0);
-      p.y = float( qGreen( c ) )*(1.0/255.0);
-      p.z = float( qBlue ( c ) )*(1.0/255.0);
-      p.w = float( qAlpha( c ) )*(1.0/255.0);
+   void ColorToPoint(QRgb c, Point4 & p) {
+	  p.x = float(qRed  (c))*(1.0/255.0);
+	  p.y = float(qGreen(c))*(1.0/255.0);
+	  p.z = float(qBlue (c))*(1.0/255.0);
+	  p.w = float(qAlpha(c))*(1.0/255.0);
    }
 };
 
@@ -125,46 +125,46 @@ private:
                     // used in queue-management, returned in enlargeEnd signal
 
 public:
-    EnlargerThread( QObject *parent = 0, int id=0 );
-    ~EnlargerThread( void );
+	EnlargerThread(QObject *parent = 0, int id=0);
+	~EnlargerThread(void);
 
-    void StopEnlarge( void ) { QMutexLocker locker( &mutex); stopEnlarge = true; restartEnlarge = false; }
-    void Enlarge( const QImage & src, const EnlargeFormat & f, const EnlargeParameter & p );
-    void EnlargeAndSave( const QImage & src, const EnlargeFormat & f, const EnlargeParameter & p,
-                         const QString & dstName, int resultQuality );
-    void SetParameter( const EnlargeParameter & p ) { QMutexLocker locker( &mutex); param = p; }
+	void StopEnlarge(void) { QMutexLocker locker(&mutex); stopEnlarge = true; restartEnlarge = false; }
+	void Enlarge(const QImage & src, const EnlargeFormat & f, const EnlargeParameter & p);
+	void EnlargeAndSave(const QImage & src, const EnlargeFormat & f, const EnlargeParameter & p,
+						 const QString & dstName, int resultQuality);
+	void SetParameter(const EnlargeParameter & p) { QMutexLocker locker(&mutex); param = p; }
 
-    bool AddProgress( float pAdd ) {
-        QMutexLocker locker( &mutex);
+	bool AddProgress(float pAdd) {
+		QMutexLocker locker(&mutex);
         progress += pAdd;
-        if( progress>1.0 )
+		if(progress>1.0)
             progress=1.0;
-        emit tellProgress( int( progress*100.0 ) );
+		emit tellProgress(int(progress*100.0));
 
         return true;
     }
 
-    float Progress( void ) {
-        QMutexLocker locker( &mutex);
+	float Progress(void) {
+		QMutexLocker locker(&mutex);
         return progress;
     }
 
-    bool CheckStop( void ) { QMutexLocker locker( &mutex); return abort || stopEnlarge; }
+	bool CheckStop(void) { QMutexLocker locker(&mutex); return abort || stopEnlarge; }
 
 protected:
-    void run( void );
+	void run(void);
 
 signals:
-    void tellProgress( int  p );
-    void enlargedImage( const QImage & result );
-    void badAlloc( void );
-    void imageNotSaved( void );
-    void imageSaved( int w, int h );
-    void enlargeEnd( int myId );
+	void tellProgress(int  p);
+	void enlargedImage(const QImage & result);
+	void badAlloc(void);
+	void imageNotSaved(void);
+	void imageSaved(int w, int h);
+	void enlargeEnd(int myId);
 
 private:
-    void waitForRestart( void );
-    bool ExecEnlarge( QImage *dstImg, FractTab *fractTab );
+	void waitForRestart(void);
+	bool ExecEnlarge(QImage *dstImg, FractTab *fractTab);
 };
 
 #endif // ENLARGERTHREAD_H

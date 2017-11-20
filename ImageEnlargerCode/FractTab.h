@@ -46,32 +46,32 @@ class FractTab {
    float scaleF, invScaleF;
 
 public:
-   FractTab( float sF );
-   ~FractTab( void );
+   FractTab(float sF);
+   ~FractTab(void);
 
-   // get random kernel center ( for rand seeds in centerX, centerY )
-   void GetKerCenter( int & centerX, int & centerY, float & centerV ) {
-      RandPerm( centerX, centerY );
+   // get random kernel center (for rand seeds in centerX, centerY)
+   void GetKerCenter(int & centerX, int & centerY, float & centerV) {
+	  RandPerm(centerX, centerY);
       centerX &= FRACTTABMASK;
       centerY &= FRACTTABMASK;
-      centerV = fTab.Get( centerX, centerY ).toF();
+	  centerV = fTab.Get(centerX, centerY).toF();
    }
-   void CreateTab( void );
-   float GetT  ( int x, int y ) {
+   void CreateTab(void);
+   float GetT  (int x, int y) {
       x &= FRACTTABMASK; y &= FRACTTABMASK;
-      return fTab.Get( x, y ).toF();
+	  return fTab.Get(x, y).toF();
    }
 
 private:
-   void AddRand( BasicArray<PFloat> *a0, float rFakt);
-   void SaveTab( void );
-   void CreateRandTab( void );
-   int  Rand( int r ) { return randTab[ r & RandTabMask ]; }
-   void RandPerm( int & r1, int & r2 ) { // (r1,r2) -> (rand1(r1,r1),rand2(r1,r2))
-      r1 = (r1>>8) + Rand( r1 );
-      r2 = (r2>>8) + Rand( r2 );
-      r1 = Rand( r1^r2 );
-      r2 = Rand( r1+r2 );
+   void AddRand(BasicArray<PFloat> *a0, float rFakt);
+   void SaveTab(void);
+   void CreateRandTab(void);
+   int  Rand(int r) { return randTab[ r & RandTabMask ]; }
+   void RandPerm(int & r1, int & r2) { // (r1,r2) -> (rand1(r1,r1),rand2(r1,r2))
+	  r1 = (r1>>8) + Rand(r1);
+	  r2 = (r2>>8) + Rand(r2);
+	  r1 = Rand(r1^r2);
+	  r2 = Rand(r1+r2);
    }
 };
 

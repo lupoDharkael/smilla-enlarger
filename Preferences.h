@@ -49,7 +49,7 @@ public:
    void WriteSettings(QSettings *mySettings);
 
 private slots:
-   void ComboChanged( void );
+   void ComboChanged(void);
 };
 
 #endif // PREFERENCES_H

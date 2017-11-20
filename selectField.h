@@ -35,7 +35,7 @@ class QImage;
 
 class SelectField : public QWidget {
     Q_OBJECT
-    Q_PROPERTY( QImage theImage READ theImage WRITE setTheImage)
+	Q_PROPERTY(QImage theImage READ theImage WRITE setTheImage)
 
 private:
     QImage myImage;
@@ -43,7 +43,7 @@ private:
 
     // transform between screen and source
     STransform screenT;
-    float formatRatio;  // clip format ( free if -1.0 )
+	float formatRatio;  // clip format (free if -1.0)
     // shown part of the sourceImage
     float baseClipX0, baseClipY0,baseClipX1,baseClipY1;
 
@@ -56,16 +56,16 @@ private:
     QImage screenImage;
 
 public:
-    SelectField( QWidget *parent=0 );
-    ~SelectField( void );
-    void SetCropRect( CropSelectRect *cR ) { cropRect = cR; }
-    void setTheImage( const QImage & newImage );
-    QImage theImage( void ) const { return myImage; }
-    void AdjustView( void );
-    void SetFormatRatio( float f ) {
+	SelectField(QWidget *parent=0);
+	~SelectField(void);
+	void SetCropRect(CropSelectRect *cR) { cropRect = cR; }
+	void setTheImage(const QImage & newImage);
+	QImage theImage(void) const { return myImage; }
+	void AdjustView(void);
+	void SetFormatRatio(float f) {
        formatRatio = f ;
-       if(  cropRect!=0 ) {
-          cropRect->SetFormat( f );
+	   if( cropRect!=0) {
+		  cropRect->SetFormat(f);
           AdjustViewAroundClip();
           emit clippingChanged();
           Update();
@@ -74,23 +74,23 @@ public:
     }
 
 signals:
-    void selectionChanged( float x, float y );
-    void clippingChanged ( void );
+	void selectionChanged(float x, float y);
+	void clippingChanged (void);
 
 public slots:
-    void Update( void ) { update(); }
+	void Update(void) { update(); }
 
 protected:
-    void mousePressEvent( QMouseEvent *event );
-    void mouseMoveEvent( QMouseEvent *event );
-    void mouseReleaseEvent( QMouseEvent *event );
-    void paintEvent( QPaintEvent *event );
-    void resizeEvent ( QResizeEvent * event );
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void paintEvent(QPaintEvent *event);
+	void resizeEvent (QResizeEvent * event);
 
 private:
-    void SimpleAdjust( void );          // adjust view if clip-rect has moved outside
-    void AdjustViewAroundClip( void );  // center view around clip-rect
-    void UpdateScreenImage( void );     // for changed souce or clipping: redraw screenImage
+	void SimpleAdjust(void);          // adjust view if clip-rect has moved outside
+	void AdjustViewAroundClip(void);  // center view around clip-rect
+	void UpdateScreenImage(void);     // for changed souce or clipping: redraw screenImage
 };
 
 #endif // SELECTFIELD_H

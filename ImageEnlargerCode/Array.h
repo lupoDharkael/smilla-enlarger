@@ -66,13 +66,13 @@ public:
    MyArray(int sx,int sy) : BasicArray<PFloat>(sx,sy) {}
    MyArray(MyArray & aSrc) : BasicArray<PFloat>(aSrc) {}
 
-   float GetF( int x, int y )        { return Get( x, y ).toF(); }
-   void  Set(int x, int y, PFloat p ) { BasicArray<PFloat>::Set( x, y, p ); }
-   void  Add(int x, int y, PFloat p ) { BasicArray<PFloat>::Add( x, y, p ); }
-   void  Sub(int x, int y, PFloat p ) { BasicArray<PFloat>::Sub( x, y, p ); }
-   void  Set(int x, int y, float p ) { BasicArray<PFloat>::Set( x, y, PFloat(p) ); }
-   void  Add(int x, int y, float p ) { BasicArray<PFloat>::Add( x, y, PFloat(p) ); }
-   void  Sub(int x, int y, float p ) { BasicArray<PFloat>::Sub( x, y, PFloat(p) ); }
+   float GetF(int x, int y)        { return Get(x, y).toF(); }
+   void  Set(int x, int y, PFloat p) { BasicArray<PFloat>::Set(x, y, p); }
+   void  Add(int x, int y, PFloat p) { BasicArray<PFloat>::Add(x, y, p); }
+   void  Sub(int x, int y, PFloat p) { BasicArray<PFloat>::Sub(x, y, p); }
+   void  Set(int x, int y, float p) { BasicArray<PFloat>::Set(x, y, PFloat(p)); }
+   void  Add(int x, int y, float p) { BasicArray<PFloat>::Add(x, y, PFloat(p)); }
+   void  Sub(int x, int y, float p) { BasicArray<PFloat>::Sub(x, y, PFloat(p)); }
 
    MyArray *SmoothDouble(void)
       { return (MyArray *) BasicArray<PFloat>::SmoothDouble(); }
@@ -123,7 +123,7 @@ public:
    void SmoothenWithDir(void);
 private:
 
-   inline float NFunc( Point2 n1, Point2 n2) { 
+   inline float NFunc(Point2 n1, Point2 n2) {
       float w;
       w = 1.0 - (n1 - n2).Norm()*10.0;
       if(w<0.0)w=0.0;
@@ -132,7 +132,7 @@ private:
       w*=w;
       return w;
    }
-   inline float NFunc0( Point2 n1, Point2 n2) { 
+   inline float NFunc0(Point2 n1, Point2 n2) {
       float w = n1*n2;
       w = 0.5 + 0.5*w;
       w = 6.0*w - 5.0;
