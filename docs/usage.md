@@ -1,4 +1,4 @@
-**Usage in detail:  **
+## Usage in detail:
 
 When starting SmillaEnlarger you will see a husky named Smilla in the tabbed view on the right side, and a thumbnail version in the column to the left, together with some buttons and input fields.
 
@@ -10,7 +10,7 @@ To replace Smilla and open another input image,
 
 Now you should see your image in the right view and a **thumbnail** of it on the left. The thumbnail shows a small version of the output image, giving you an impression of its contents and format.
 
-**Cropping:**
+### Cropping
 
 In the right tab, titled &#39; **Cropping**&#39;, you can select a region of your image for enlarging. When you hold down the mouse within this view and drag it around, you will see that a frame appears, the **cropping rectangle**. It won&#39;t disappear when you release the mouse. You can **move** it by grabbing its interior or **resize** it by grabbing the frame. To make it disappear, click anywhere outside the rectangle.
 
@@ -20,7 +20,7 @@ In the combo box under the picture you can select one of several fixed **croppin
 
 After clicking &#39; **Center View**&#39; the view will center around the selected region. This is useful for fine adjustments if you have marked a very small part of the input.
 
-**Specifying the Output Dimensions**
+### Specifying the Output Dimensions
 
 The size of the result is displayed under the **Thumbnail Preview**. To change it, you can use one of several methods listed in the **combo box** directly under the header &#39;Output Dimensions&#39; on the left.
 
@@ -36,7 +36,7 @@ The methods are:
 
 For each of these methods you can get an impression how it works by changing the size and format of the **cropping rectangle** and watching the effects and displayed size in the **Thumbnail Preview**. Some methods are mostly useful for **batch processing.**
 
-**Drop, Paste, Open**
+### Drop, Paste, Open
 
 SmillaEnlarger supports **Drag &amp; Drop** : You can drag a file or image from any folder or from another program offering Drag&amp;Drop and drop it onto the enlarger window. The enlarger then tries to open it as new source.
 
@@ -53,7 +53,7 @@ After selecting a picture, you will see it displayed in the &#39;Cropping&#39; t
 
 
 
-**Enlarge &amp; Save:**
+### Enlarge &amp; Save
 
 To **save** the enlarged version of the **selected area** in the **&#39;Cropping&#39; view** , press &#39; **Enlarge &amp; Save**&#39;. Calculating the magnified picture will take some time, when the progress bar reaches 100%, the result is saved.
 
@@ -68,7 +68,7 @@ The new job is pushed into the **Job Queue** and processed in the background, yo
 Changes of enlarger settings **don&#39;t have any influence on existing jobs**.
 The settings of the job ( size, destination, parameters ) are those present at the moment of pressing &#39; **Enlarge &amp; Save**&#39;, they can not be changed afterwards.
 
-**The Parameter Tab**
+### The Parameter Tab
 
 On the right side you can **choose a tab** titled &#39; **Parameter**&#39;. There you can **preview** a part of the output image with the desired zoom. This view shows **only a part** of the result. It is only for giving you an impression of the zoom and for testing enlarging parameters.
 
@@ -107,7 +107,7 @@ Also, when you drop multiple files, those are likewise pushed into the queue aut
 
 
 
-**The Job Queue**
+### The Job Queue
 
 SmillaEnlarger makes use of a **Job Queue**. New calculations are appended to a list of jobs, the entries of the list are then by and by given to the calculation threads in the background, while you can continue your work at once. The progress of the job queue is shown by the progress bar at the bottom left of the window . For detailed information about the jobs in the queue, open the **Jobs Tab**.
 
@@ -130,7 +130,7 @@ To prevent lengthy path-typing, simply write   ln -s  into the terminal, then go
 Go into the subfolder Contents/MacOS/, inside you will find the SmillaEnlarger binary, grab it with the mouse and drop it onto the terminal window, the terminal then will fill in the full path to the binary.
 
 
- **Usage of SmillaEnlarger:**
+ ### Usage of SmillaEnlarger
 
 SmillaEnlarger [&lt; sourcename &gt;] [-options...]
 
@@ -182,13 +182,16 @@ Print this help.
 -i 
 Start in interactive mode.
 
-**Project page:**  ** **     [http://sourceforge.net/projects/imageenlarger/](http://sourceforge.net/projects/imageenlarger/)
+**Original (old) Project page:**    [http://sourceforge.net/projects/imageenlarger/](http://sourceforge.net/projects/imageenlarger/)
+
+**Project page:**    [https://github.com/lupoDharkael/smilla-enlarger](https://github.com/lupoDharkael/smilla-enlarger)
 
 
 
-**License / Copyright:**
+### License / Copyright
 
 Copyright (C) 2009 Mischa Lusteck
+
 Copyright (C) 2017 Alejandro Sirgo
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
