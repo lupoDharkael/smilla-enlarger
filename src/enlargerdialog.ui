@@ -2353,19 +2353,19 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>SelectField</class>
    <extends>QWidget</extends>
-   <header>selectField.h</header>
+   <header>src/selectField.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PreviewField</class>
    <extends>QWidget</extends>
-   <header>previewField.h</header>
+   <header>src/previewField.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ThumbField</class>
    <extends>QWidget</extends>
-   <header>thumbField.h</header>
+   <header>src/thumbField.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
