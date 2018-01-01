@@ -8,8 +8,8 @@ Comment=Enlarge cropped piece of image
 Type=Application
 Categories=Graphics;Photography;
 
-Exec=smillaenlarger
-TryExec=smillaenlarger
+Exec=smilla-enlarger
+TryExec=smilla-enlarger
 Icon=smilla
 
 Terminal=false
